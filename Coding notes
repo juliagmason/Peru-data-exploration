@@ -48,37 +48,115 @@ Shark species in peru:
 [77] gato                           Mobula japanica                Mobula spp.                    batea                         
 [81] guitarra 
 
-sort (unique (peru.catch$capture.species.1))
- [1]                    anchoveta          anchoveta blanca   anchoveta negra    angelote           atun              
- [7] azul               azul, diamante     bacalao            bagre              batea              bonito            
-[13] caballa            cabrilla           cachema            cacho              cachudas           carate            
-[19] chileno            chiri              chita              congrio            congrio rojo       diamante          
-[25] espada             gata               gatita             gato               guiro              guitarra          
-[31] guitarra electrica jurel              langosta           langostino         lenguado           ler               
-[37] levas              lisa               lisa voladoraa     mama               mamita             manta             
-[43] mantequero         martillo           martillo grande    martillo, zorro    merlin             merluza           
-[49] mobula             nata               perico             pota               rara               raya              
-[55] raya aguila        raya peruana       suco               suquillo           tapadera           tiburon           
-[61] tollo              tollo narizon      tortuga            tuno               tuno bueno         vela              
-[67] verdes             vidrio             zorro              zuco               angelota           batana            
-[73] cruceta            Guitarra           Martillo           pez vela           Raya               Raya aguila       
-[79] raya muelona       t. mantequero      tollo mama         Tollo mama         tollo mams         tunos             
-[85] zorro pelagico 
+After first round of cleaning (remove tollo, t., aa)
+> sort (unique (capture.spp$capture.species.1))
+ [1]                    anchoveta          anchoveta blanca   anchoveta negra   
+ [5] angelota           angelote           atun               azul              
+ [9] azul, diamante     bacalao            bagre              batana            
+[13] batea              bonito             caballa            cabrilla          
+[17] cachema            cacho              cachudas           carate            
+[21] chileno            chiri              chita              congrio           
+[25] congrio rojo       cruceta            diamante           espada            
+[29] gata               gatita             gato               guiro             
+[33] guitarra           Guitarra           guitarra electrica jurel             
+[37] langosta           langostino         lenguado           ler               
+[41] levas              lisa               lisa voladora      mama              
+[45] mamita             mams               manta              mantequero        
+[49] martillo           Martillo           martillo grande    martillo, zorro   
+[53] merlin             merluza            mobula             narizon           
+[57] nata               perico             pez vela           pota              
+[61] rara               raya               Raya               raya aguila       
+[65] Raya aguila        raya muelona       raya peruana       suco              
+[69] suquillo           tapadera           tiburon            tollo             
+[73] tortuga            tuno               tuno bueno         tunos             
+[77] vela               verdes             vidrio             zorro             
+[81] zorro pelagico     zuco      
 
-sort (unique (peru.catch$capture.species.2 [which (!peru.catch$capture.species.2 %in% peru.catch$capture.species.1)]))
- [1] aguja                         algas                         azul, zorro, pardo y martillo bacha                        
- [5] barracuda                     barrilete                     cachito                       cachona                      
- [9] camotillo                     cangrejo                      caracol baboso                carajito                     
-[13] carey                         cau cau                       cavinza                       cazon                        
-[17] chauchilla                    coco                          congrio blanco                congrio gato                 
-[21] congrio negro                 diamante, azul                doncella                      guitarra nortena             
-[25] lisa voladora                 lorna                         manta blanca. Japanica        martillo bebe                
-[29] mobulo japanica               nato                          p. spi.                       pampano                      
-[33] pardo                         peces s/n                     peje                          peje blanco                  
-[37] pez s/n                       quimeras                      raya agulia                   raya espinosa                
-[41] raya negra                    raya pequenas                 raya wiro/espinosa            tollo blanco                 
-[45] tortugas                      tuno malo                     tuya                          viuda                        
-[49] wira                          Zonito                        Batea                         Cabrilla                     
-[53] chapuleta                     cojinova                      mobula japanica               Mobula Japanica              
-[57] mobulas                       narizon                       pez aguja                     raaya muelona                
-[61] T. mantequero                 tollo chileno                 Tollo gata                    tollo martillo         
+> sort (unique (capture.spp$capture.species.2 [which (!capture.spp$capture.species.2 %in% capture.spp$capture.species.1)]))
+ [1] aguja                         algas                        
+ [3] azul, zorro, pardo y martillo bacha                        
+ [5] barracuda                     barrilete                    
+ [7] Batea                         blanco                       
+ [9] Cabrilla                      cachito                      
+[11] cachona                       camotillo                    
+[13] cangrejo                      caracol baboso               
+[15] carajito                      carey                        
+[17] cau cau                       cavinza                      
+[19] cazon                         chapuleta                    
+[21] chauchilla                    coco                         
+[23] cojinova                      congrio blanco               
+[25] congrio gato                  congrio negro                
+[27] diamante, azul                doncella                     
+[29] guitarra nortena              lorna                        
+[31] manta blanca. Japanica        martillo bebe                
+[33] mobula japanica               Mobula Japanica              
+[35] mobulas                       mobulo japanica              
+[37] nato                          p. spi.                      
+[39] pampano                       pardo                        
+[41] peces s/n                     peje                         
+[43] peje blanco                   pez aguja                    
+[45] pez s/n                       quimeras                     
+[47] raya agulia                   raya espinosa                
+[49] raya negra                    raya pequenas                
+[51] raya wiro/espinosa            T. mantequero                
+[53] tortugas                      tuno malo                    
+[55] tuya                          viuda       
+
+ sort (unique (capture.spp$capture.species.3 [which (!capture.spp$capture.species.3 %in% capture.spp$capture.species.1 & !capture.spp$capture.species.3 %in% capture.spp$capture.species.2)]))
+ [1] barracudas          barrilete negra     Bonito              caballito          
+ [5] caracoles           chancho             chancho marino      chula              
+ [9] concha de abanico   congrio gato blanco culebra             diablo             
+[13] espejo              fina                gallinasa           Gallinasa          
+[17] lomo negro          manta negra         Mantequero          Mobula             
+[21] otro                pampanito           pavita pia          peces s/i          
+[25] pintadilla          raya grande         tamborin            tiburon toro       
+[29] tino                tolllo              voladora            zorrillo    
+[57] wira                          Zonito  
+
+> sort (unique (capture.spp$capture.species.4 [which (!capture.spp$capture.species.4 %in% capture.spp$capture.species.1 & !capture.spp$capture.species.4 %in% capture.spp$capture.species.2 & !capture.spp$capture.species.4 %in% capture.spp$capture.species.3)]))
+ [1] aguila                     albacora                   aleta                     
+ [4] Angelote                   baracadas                  botella                   
+ [7] cachos                     caracol pia                caracoles cono            
+[10] chili                      comun                      congrio chilindrina       
+[13] congrio gato o gato blanco diablo rojo                doncella gato             
+[16] gallinazo                  Gatita                     Lenguado                  
+[19] lenguados                  lisa voladoraes            lisilla                   
+[22] manta blanca               manta o mobula             mobula blanca             
+[25] mobula munkiana            ovas                       parbo                     
+[28] peces varios               perela                     pescados                  
+[31] platillos                  pulpo                      raya a                    
+[34] verrugata                  zorrito   
+
+> sort (unique (capture.spp$capture.species.5 [which (!capture.spp$capture.species.5 %in% capture.spp$capture.species.1 & !capture.spp$capture.species.5 %in% capture.spp$capture.species.2 & !capture.spp$capture.species.5 %in% capture.spp$capture.species.3 & !capture.spp$capture.species.5 %in% capture.spp$capture.species.4)]))
+ [1] Alopias pelagicus               Arajito                        
+ [3] atun de aleta amarilla          baracuda                       
+ [5] Caballa                         cagalo                         
+ [7] cangrejo gato                   Cazon chileno                  
+ [9] chilidrina                      chilindrina                    
+[11] chino                           chuila                         
+[13] concha                          congrio mediano                
+[15] congrio rojo mediano            corvina                        
+[17] diamanta                        langostas                      
+[19] langostinos                     Lengueta                       
+[21] Mamita                          manta o diablo                 
+[23] merlin Negro                    merlin rayado                  
+[25] mero                            Notorynchus cepedianus         
+[27] otro (aguila, lorna, raya, etc) otro (angila, raya, lorna, etc)
+[29] pava                            pejegallo                      
+[31] veca                            Violador
+
+> sort (unique (capture.spp$capture.species.6 [which (!capture.spp$capture.species.6 %in% capture.spp$capture.species.1 & !capture.spp$capture.species.6 %in% capture.spp$capture.species.2 & !capture.spp$capture.species.6 %in% capture.spp$capture.species.3 & !capture.spp$capture.species.6 %in% capture.spp$capture.species.4 & !capture.spp$capture.species.6 %in% capture.spp$capture.species.5)]))
+ [1]  morena                                    barracudo                                 
+ [3] barrucada                                  borrauad                                  
+ [5] cabinza                                    cabrillon                                 
+ [7] cangrejo negro                             cangrio rojo                              
+ [9] carateka                                   gallinaza                                 
+[11] marotilla                                  morena                                    
+[13] otro (aguila, morena, pez diablo)          otro (aguila, morena, pez iguana)         
+[15] otro (morena, pez iguana, cangrejo morado) Pampano  
+
+> sort (unique (capture.spp$capture.species.7 [which (!capture.spp$capture.species.7 %in% capture.spp$capture.species.1 & !capture.spp$capture.species.7 %in% capture.spp$capture.species.2 & !capture.spp$capture.species.7 %in% capture.spp$capture.species.3 & !capture.spp$capture.species.7 %in% capture.spp$capture.species.4 & !capture.spp$capture.species.7 %in% capture.spp$capture.species.5 & !capture.spp$capture.species.7 %in% capture.spp$capture.species.6)]))
+[1] calamar       Iguana        morena, bocon pez iguana    piloto        toyo         
+[7] Verrugato    
+
+
