@@ -1,0 +1,84 @@
+Species caught in DGN (common name): 
+
+[1] Unknown Species                Tuna, Yellowfin                Tuna, Skipjack                 Bonito, Pacific               
+ [5] Tuna, Bluefin                  Tuna, Albacore                 Scombrid                       Escolar (Smith's)             
+ [9] Oilfish                        Mackerel, Bullet               Yellowtail                     Mackerel, Unidentified        
+[13] Mackerel, Pacific              Mackerel, Jack                 Billfish, Unidentified         Marlin, Black                 
+[17] Swordfish, Broadbill           Marlin, Striped                Marlin, Blue                   Spearfish, Shortbill          
+[21] Sailfish                       Shark, White                   Sardine, Pacific               Anchovy, Northern             
+[25] Herring, Pacific               Remora                         Ray, Mobula                    Ray, Manta                    
+[29] Barracuda, California          Pipefish Bay                   Shark, Bigeye Thresher         Shark, Pelagic Thresher       
+[33] Shark, Shortfin Mako           Shark, Spiny Dogfish           Shark, Common Thresher         Shark, Basking                
+[37] Shark, Unid. Hammerhead        Shark, Smooth Hammerhead       Shark, Soupfin                 Shark, Sixgill                
+[41] Shark, Sevengill               Shark, Pacific Angel           Shark, Blue                    Shark, Salmon                 
+[45] Ray, Unidentified              Ray, Bat                       Ray, Pacific Electric          Stingray, Round               
+[49] Skate, Unidentified            Skate, Big                     Skate, California              Louvar                        
+[53] Shark, Megamouth               Stingray, Pelagic              Rockfish, Unidentified         Mola, Common                  
+[57] Slender Mola                   Seabass, White                 Opah                           Needlefish, California        
+[61] Blacksmith                     Hake, Pacific                  Hagfish Pacific                Fish, Unidentified            
+[65] Squid, Market                  Octopus, Unidentified          Squid, Jumbo                   Sea Star                      
+[69] Sea Urchin                     Mollusk, Unidentified          Crab, Dungeness                Crab, Spider                  
+[73] Crab, Pelagic Red              Tunicates, Pelagic             Crustacean, Unidentified       Crestfish                     
+[77] Pomfret                        Lancetfish, Longnose           Fish, Other Identified         Oarfish                       
+[81] King Of The Salmon             Dolphinfish, Mahi-Mahi, Dorado Pomfret, Pacific               Tuna, Bigeye                  
+[85] Shark, Unidentified            Shark, Unidentified Thresher   Shark, Longfin Mako            Billfish, Other Identified    
+[89] Shark, Prickly                 Invertebrate, Unidentified   
+
+Shark species in peru:
+ unique(peru.sharks$species)
+ [1] Diamante                       Azul                           Martillo                       T. chancho                    
+ [5] Raya                           Otro                           Crocodile (P. kamoharai)       Porbeagle (L. nasus)          
+ [9] Thresher (A. vulpinus)         Zorro                          T. pardo                       School (G. galeus)            
+[13] Carcharhinus spp.              Manta raya                     S. zygaena                     Vidrio                        
+[17] Cazon                          C. brachyurus                  C. obscurus                    T. Gato                       
+[21] Desconocido                    pelagic stingray (P. violacea) Raya negra                     vidrio                        
+[25] Tollo mama                     Raya espinosa                  Gatita                                                       
+[29] Raya aguila                    Tollo blanco                   T. Mantequero                  Pejegallo                     
+[33] Tollo piruche                  Angelote                       Gato                           Guitarra                      
+[37] Tollo rara                     Raya trompuda                  Raya batea/batana              t. mantequero                 
+[41] T. Pardo                       Tollo chileno                  tollo mama                     G. galeus                     
+[45] tollo _ato                     Tollo Üato                     Rabudo                         rabudo                        
+[49] raya aguila                    raya                           tollo punton                   azul                          
+[53] Ler                            Guitarra electrica             Pastelillo                     Tapadera                      
+[57] Carate                         carate                         Batea                          Voladora                      
+[61] Tulla                          Raya fina                      Raya Üata                      Tollo punton                  
+[65] Guitarra nortena               Pardo                          T. Tigre                       Tollo                         
+[69] Mantequero                     T. Narizon                     Raya bacha                     Congrio                       
+[73] Gata                           Raya electrica                 zorro                          gatita                        
+[77] gato                           Mobula japanica                Mobula spp.                    batea                         
+[81] guitarra 
+
+sort (unique (peru.catch$capture.species.1))
+ [1]                    anchoveta          anchoveta blanca   anchoveta negra    angelote           atun              
+ [7] azul               azul, diamante     bacalao            bagre              batea              bonito            
+[13] caballa            cabrilla           cachema            cacho              cachudas           carate            
+[19] chileno            chiri              chita              congrio            congrio rojo       diamante          
+[25] espada             gata               gatita             gato               guiro              guitarra          
+[31] guitarra electrica jurel              langosta           langostino         lenguado           ler               
+[37] levas              lisa               lisa voladoraa     mama               mamita             manta             
+[43] mantequero         martillo           martillo grande    martillo, zorro    merlin             merluza           
+[49] mobula             nata               perico             pota               rara               raya              
+[55] raya aguila        raya peruana       suco               suquillo           tapadera           tiburon           
+[61] tollo              tollo narizon      tortuga            tuno               tuno bueno         vela              
+[67] verdes             vidrio             zorro              zuco               angelota           batana            
+[73] cruceta            Guitarra           Martillo           pez vela           Raya               Raya aguila       
+[79] raya muelona       t. mantequero      tollo mama         Tollo mama         tollo mams         tunos             
+[85] zorro pelagico 
+
+sort (unique (peru.catch$capture.species.2 [which (!peru.catch$capture.species.2 %in% peru.catch$capture.species.1)]))
+ [1] aguja                         algas                         azul, zorro, pardo y martillo bacha                        
+ [5] barracuda                     barrilete                     cachito                       cachona                      
+ [9] camotillo                     cangrejo                      caracol baboso                carajito                     
+[13] carey                         cau cau                       cavinza                       cazon                        
+[17] chauchilla                    coco                          congrio blanco                congrio gato                 
+[21] congrio negro                 diamante, azul                doncella                      guitarra nortena             
+[25] lisa voladora                 lorna                         manta blanca. Japanica        martillo bebe                
+[29] mobulo japanica               nato                          p. spi.                       pampano                      
+[33] pardo                         peces s/n                     peje                          peje blanco                  
+[37] pez s/n                       quimeras                      raya agulia                   raya espinosa                
+[41] raya negra                    raya pequenas                 raya wiro/espinosa            tollo blanco                 
+[45] tortugas                      tuno malo                     tuya                          viuda                        
+[49] wira                          Zonito                        Batea                         Cabrilla                     
+[53] chapuleta                     cojinova                      mobula japanica               Mobula Japanica              
+[57] mobulas                       narizon                       pez aguja                     raaya muelona                
+[61] T. mantequero                 tollo chileno                 Tollo gata                    tollo martillo         
