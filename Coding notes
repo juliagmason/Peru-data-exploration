@@ -159,4 +159,29 @@ After first round of cleaning (remove tollo, t., aa)
 [1] calamar       Iguana        morena, bocon pez iguana    piloto        toyo         
 [7] Verrugato    
 
+Species caught in both, based on common names I could find:
+ spp.overlap$CommonName
+ [1] Unknown Species                Tuna, Skipjack                
+ [3] Bonito, Pacific                Tuna, Albacore                
+ [5] Mackerel, Bullet               Mackerel, Pacific             
+ [7] Marlin, Black                  Swordfish, Broadbill          
+ [9] Ray, Manta                     Mullet, Striped               
+[11] Shark, Silky                   Shark, Pelagic Thresher       
+[13] Shark, Shortfin Mako           Shark, Spiny Dogfish          
+[15] Shark, Common Thresher         Shark, Smooth Hammerhead      
+[17] Shark, Soupfin                 Shark, Sevengill              
+[19] Shark, Blue                    Corbina, California           
+[21] Needlefish, California         Whitefish, Ocean              
+[23] Squid, Jumbo                   Dolphinfish, Mahi-Mahi, Dorado
+
+spp.overlap$ScientificName
+ [1] Unknown Sp.              Katsuwonus pelamis       Sarda chiliensis        
+ [4] Thunnus alalunga         Auxis rochei             Scomber japonicus       
+ [7] Makaira indica           Xiphias gladius          Manta birostris         
+[10] Mugil cephalus           Carcharhinus falciformis Alopias pelagicus       
+[13] Isurus oxyrinchus        Squalus acanthias        Alopias vulpinus        
+[16] Sphyrna zygaena          Galeorhinus galeus       Notorynchus cepedianus  
+[19] Prionace glauca          Menticirrhus undulatus   Strongylura exilis      
+[22] Caulolatilus princeps    Dosidicus gigas          Coryphaena hippurus  
+
 
