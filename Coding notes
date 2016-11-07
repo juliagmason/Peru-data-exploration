@@ -165,23 +165,23 @@ Species caught in both, based on common names I could find:
  [3] Bonito, Pacific                Tuna, Albacore                
  [5] Mackerel, Bullet               Mackerel, Pacific             
  [7] Marlin, Black                  Swordfish, Broadbill          
- [9] Ray, Manta                     Mullet, Striped               
-[11] Shark, Silky                   Shark, Pelagic Thresher       
-[13] Shark, Shortfin Mako           Shark, Spiny Dogfish          
-[15] Shark, Common Thresher         Shark, Smooth Hammerhead      
-[17] Shark, Soupfin                 Shark, Sevengill              
-[19] Shark, Blue                    Corbina, California           
-[21] Needlefish, California         Whitefish, Ocean              
-[23] Squid, Jumbo                   Dolphinfish, Mahi-Mahi, Dorado
+ [9] Ray, Manta                     Shark, Pelagic Thresher       
+[11] Shark, Shortfin Mako           Shark, Spiny Dogfish          
+[13] Shark, Common Thresher         Shark, Smooth Hammerhead      
+[15] Shark, Soupfin                 Shark, Sevengill              
+[17] Shark, Blue                    Needlefish, California        
+[19] Squid, Jumbo                   Dolphinfish, Mahi-Mahi, Dorado
 
-spp.overlap$ScientificName
- [1] Unknown Sp.              Katsuwonus pelamis       Sarda chiliensis        
- [4] Thunnus alalunga         Auxis rochei             Scomber japonicus       
- [7] Makaira indica           Xiphias gladius          Manta birostris         
-[10] Mugil cephalus           Carcharhinus falciformis Alopias pelagicus       
-[13] Isurus oxyrinchus        Squalus acanthias        Alopias vulpinus        
-[16] Sphyrna zygaena          Galeorhinus galeus       Notorynchus cepedianus  
-[19] Prionace glauca          Menticirrhus undulatus   Strongylura exilis      
-[22] Caulolatilus princeps    Dosidicus gigas          Coryphaena hippurus  
+ sort (spp.overlap$ScientificName)
+ [1] Alopias pelagicus      Alopias vulpinus      
+ [3] Auxis rochei           Coryphaena hippurus   
+ [5] Dosidicus gigas        Galeorhinus galeus    
+ [7] Isurus oxyrinchus      Katsuwonus pelamis    
+ [9] Makaira indica         Manta birostris       
+[11] Notorynchus cepedianus Prionace glauca       
+[13] Sarda chiliensis       Scomber japonicus     
+[15] Sphyrna zygaena        Squalus acanthias     
+[17] Strongylura exilis     Thunnus alalunga      
+[19] Unknown Sp.            Xiphias gladius     
 
 
