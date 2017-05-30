@@ -1,5 +1,5 @@
 ##### PD Data Cleaning #####
-rm(list=ls())
+#rm(list=ls())
 
 library (tidyverse)
 library (lubridate)
@@ -14,13 +14,34 @@ trips <- rbind (trips, new.trips)
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%y")
 
 
-sets <- read.csv ("Lances_sep8_16_fixed.csv", stringsAsFactors = FALSE, fileEncoding = "latin1") 
+sets <- read.csv ("Lances_sep8_16_fixed.csv") 
+sets$Fecha.de.inicio <- as.character (sets$Fecha.de.inicio) #, format = "%m/%d/%y")
+sets$fecha.de.recojo <- as.character (sets$fecha.de.recojo) #, format = "%m/%d/%y")
+sets$Latitud.inicial <- as.character (sets$Latitud.inicial)
+sets$latitide.final <- as.character (sets$latitide.final)
+sets$longitude.inicial <- as.character (sets$longitude.inicial)
+sets$longitude.final <- as.character (sets$longitude.final)
+sets$Lat.1 <- as.character(sets$Lat.1)
+sets$Lat.2 <- as.character(sets$Lat.2)
+sets$Lat.3 <- as.character(sets$Lat.3)
+sets$lat.4 <- as.character(sets$lat.4)
+sets$Long.1 <- as.character(sets$Long.1)
+sets$Long.2 <- as.character(sets$Long.2)
+sets$Long.3 <- as.character(sets$Long.3)
+sets$Long.4 <- as.character(sets$Long.4)
+
 sets$Lance.code <- paste (sets$Trip.code, sets$Lance.., sep = ".")
 
 
 
 # fix dates and horas that excel added in
 
+# On May 29, 2017: 246.8, 362.1, 376.4, 590.2 were all gillnets with negative soak times. 
+sets$fecha.de.recojo[which (sets$Lance.code == 246.8)] <- "5/15/06"
+sets$Fecha.de.inicio[which (sets$Lance.code == 362.1)] <- "9/27/07"
+ #"2007-09-28"
+sets$fecha.de.recojo[which (sets$Lance.code == 376.4)] <- "11/11/07" # "2007-11-10"
+sets$fecha.de.recojo[which (sets$Lance.code == 590.2)] <- "1/16/11" #"2011-01-16"
 
 # fix hora
 sets$Hora.de.inicio <- as.character(as.POSIXct(paste(gsub(" .*$", "", sets$Fecha.de.inicio), gsub (".* ", "", sets$Hora.de.inicio), sep = " "), format = "%m/%d/%y %H:%M:%S"))
@@ -261,6 +282,8 @@ set.DLL$Year <- year(set.DLL$Date)
 
 sets <- cbind (sets, set.DLL$Date, set.DLL$MY)
 colnames(sets)[84:85] <- c("Date", "MY")
+
+write.csv (sets, file = "cleaned_sets.csv")
 
 turtles <- read.csv("Turtles_main.csv")
 
