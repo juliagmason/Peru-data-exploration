@@ -4,6 +4,7 @@
 library(tidyverse)
 
 trips <- read.csv("trips_main_fixed.csv", na.strings = "NA")
+sets <- read.csv ("cleaned_sets.csv")
 
 nets <- filter(trips, (!is.na(trips$panes)))  # 671
 unique(nets$Lugar.de.zarpe) # going to say that's okay, they're all in north
@@ -56,7 +57,7 @@ summary(gillnet.prob$Simple.net.size) # net area in meters
 summary(gillnet.prob$pane.2)
 length(which(gillnet.prob$pane.2 > 0))  # 53
 summary(gillnet.prob$pane.3)
-length (which (gillnet.prob$pane.3 > 0))  # 2, 459 and 460, both 23 
+length (which (gillnet.prob$pane.3 > 0))  # 2, 459 and 460, both 23, both san jose
 gillnet.prob$pane.3[460]
 summary(gillnet.prob$pane.3.units) # both b. as are pane 2
 
