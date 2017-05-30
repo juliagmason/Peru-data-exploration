@@ -17,6 +17,7 @@ gn.dll.eff <- gn.sets %>%
   mutate (km.day = net.length.est * Soak.time / 1000 / 24)
 
 
+write.csv (gn.dll.eff, file = "GN_DLL_eff.csv")
 
 
 
