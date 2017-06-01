@@ -13,6 +13,8 @@ colnames(new.trips) <- colnames(trips) # some capitals were changed
 trips <- rbind (trips, new.trips)
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%y")
 
+write.csv (trips, file = "./Data_tables/cleaned_trips.csv")
+
 
 sets <- read.csv ("./Raw_data/Lances_sep8_16_fixed.csv") 
 sets$Fecha.de.inicio <- as.character (sets$Fecha.de.inicio) #, format = "%m/%d/%y")
@@ -280,6 +282,10 @@ set.DLL$MY <- as.Date(
 
 set.DLL$Year <- year(set.DLL$Date)
 
+set.DLL$Lance.code <- as.character( (set.DLL$Lance.code))
+
+write.csv (set.DLL, file = "./Data_tables/set_DLL.csv")
+
 sets <- cbind (sets, set.DLL$Date, set.DLL$MY)
 colnames(sets)[84:85] <- c("Date", "MY")
 
@@ -293,10 +299,13 @@ colnames(new.turt) <- colnames(turtles)
 turtles <- rbind (turtles, new.turt)
 turtles$Lance.code <- paste(turtles$Trip.code, turtles$Lance, sep = ".")
 turtles <- left_join(turtles, set.DLL, by = "Lance.code")
+# replace species codes with names. use sci name?
+turtles$Species <- factor (turtles$Species, levels = c (1, 2, 3, 4, 5, 6), labels = c ("D_coriacea", "E_imbricata", "C_caretta", "C_mydas", "L_olivacea", "Unk"))
 
 sharks <- read.csv("./Raw_data/sharks_main.csv") # messed with shark_main already
 sharks$Lance.code <- paste(sharks$trip.code, sharks$lance, sep = ".")
-#sharks <- left_join(sharks, set.DLL, by = "Lance.code")
+sharks <- left_join(sharks, set.DLL, by = "Lance.code") %>%
+  rename (Species = species, Trip.code = trip.code) # fix capitals to match other data frames
 
 mammals <- read.csv("./Raw_data/Mammals_Main.csv")
 new.mamm <- read.csv("./Raw_data/mammals_sep8.csv") %>% filter (!Trip.code %in% mammals$Trip.code)
@@ -306,8 +315,11 @@ mammals <- rbind (mammals, new.mamm)
 mammals$Lance.code <- paste(mammals$Trip.code, mammals$Lance.., sep = ".")
 mammals <- left_join(mammals, set.DLL, by = "Lance.code")
 # this was all I played with thus far
+# Change species from integer to spp name. 
+# Replace species codes with factor species name instead of integer. 
+mammals$Species <- factor (mammals$Species, levels = c (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11), labels = c ("D_capensis", "P_spinipinnus", "L_oscurus", "T_truncatus", "otro", "unk", "Globicephala_spp", "O_flavescens", "G_griseus", "lobo_chusco", "A_australis"))
 
-birds <- read.csv("./Raw_data/seabirds_sep8.csv", stringsAsFactors=FALSE, fileEncoding="latin1") %>% filter (When.captured. != 3) # remove just sightings. Changed fileEncoding to encoding on windows
+birds <- read.csv("./Raw_data/seabirds_sep8.csv") %>% filter (When.captured. != 3) # remove just sightings. 
 birds$Lance.code <- paste(birds$Trip.code, birds$Lance.., sep = ".")
 birds <- left_join (birds, set.DLL, by = "Lance.code")
 
