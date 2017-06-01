@@ -3,7 +3,7 @@
 
 library(tidyverse)
 
-trips <- read.csv("./Raw_data/trips_main_fixed.csv", na.strings = "NA")
+trips <- read.csv("./Data_tables/cleaned_trips.csv", na.strings = "NA")
 sets <- read.csv ("./Data_tables/cleaned_sets.csv")
 
 nets <- filter(trips, (!is.na(trips$panes)))  # 671
@@ -69,3 +69,15 @@ write.csv(gillnet.prob.lite, file = "./Data_tables/probable_gillnets.csv")
 
 gn.sets <- filter (sets, Trip.code %in% gillnet.prob$Trip.code)
 write.csv (gn.sets, file = "./Data_tables/probable_gn_sets.csv")
+
+gn.shark <- filter (sharks, trip.code %in% gillnet.prob$Trip.code)
+write.csv (gn.shark, file = "./Data_tables/gn_shark.csv")
+
+gn.mamm <- filter (mammals, Trip.code %in% gillnet.prob$Trip.code)
+write.csv (gn.mamm, file = "./Data_tables/gn_mamm.csv")
+
+gn.turt <- filter (turtles, Trip.code %in% gillnet.prob$Trip.code)
+write.csv (gn.turt, file = "./Data_tables/gn_turt.csv")
+
+gn.bird <- filter (birds, Trip.code %in% gillnet.prob$Trip.code)
+write.csv (gn.bird, file = "./Data_tables/gn_bird.csv")
