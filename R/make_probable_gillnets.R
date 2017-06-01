@@ -70,7 +70,10 @@ write.csv(gillnet.prob.lite, file = "./Data_tables/probable_gillnets.csv")
 gn.sets <- filter (sets, Trip.code %in% gillnet.prob$Trip.code)
 write.csv (gn.sets, file = "./Data_tables/probable_gn_sets.csv")
 
-gn.shark <- filter (sharks, trip.code %in% gillnet.prob$Trip.code)
+
+## Make data tables of species catch
+
+gn.shark <- filter (sharks, Trip.code %in% gillnet.prob$Trip.code)
 write.csv (gn.shark, file = "./Data_tables/gn_shark.csv")
 
 gn.mamm <- filter (mammals, Trip.code %in% gillnet.prob$Trip.code)
