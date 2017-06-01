@@ -6,8 +6,8 @@ library(stringr)
 library(tidyverse)
 
 # read in trips
-trips <- read.csv("trips_main.csv")
-new.trips <- read.csv ("trips_sep8.csv") %>% filter (!Trip.Code %in% trips$Trip.code) # newer dataset
+trips <- read.csv("./Raw_data/trips_main_fixed.csv")
+new.trips <- read.csv ("./Raw_data/trips_sep8.csv") %>% filter (!Trip.Code %in% trips$Trip.code) # newer dataset
 colnames(new.trips) <- colnames(trips) # some capitals were changed
 trips <- rbind (trips, new.trips)
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%y")
