@@ -2,7 +2,7 @@
 # Julia  G Mason
 # 11/2/2016
 
-peru.sharks <- read.csv ("Sharks_sep8.csv")
+peru.sharks <- read.csv ("./Raw_data/Sharks_sep8.csv")
 
 # DGN data
 
