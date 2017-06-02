@@ -57,6 +57,8 @@ gn.top.mn.ts <- group_by (gn.top.catch.set, Species, Year) %>%
   spread (Year, CPUE) %>%
   mutate_all (funs (replace (., is.na(.), 0)))
 
+write.csv (gn.top.mn.ts, file = "./Data_tables/Top_gn_DFA_ts.csv", row.names = FALSE)
+
 
 ###################################
 # Also with just Salaverry
@@ -100,10 +102,12 @@ svry.top.catch.set <- filter (svry.catch.set, Species %in% top.svry.shark$Specie
 
 # Time series with species as rows and season as columns
 
-svry.top.mn.ts <- group_by (top.svry.catch.set, Species, Year) %>%
+svry.top.mn.ts <- group_by (svry.top.catch.set, Species, Year) %>%
   summarise (CPUE = mean (TotCat, na.rm = TRUE)) %>%
   spread (Year, CPUE) %>%
   mutate_all (funs (replace (., is.na(.), 0)))
+
+write.csv (svry.top.mn.ts, file = "./Data_tables/Top_svry_DFA_ts.csv", row.names = FALSE)
 
 
 ###################################################
@@ -113,10 +117,10 @@ library (MARSS)
 
 # try one sample
 # 2 trends
-tmp.model.list <- list (m = 2, R = "equalvarcov")
-tmp.DFA.2 <- MARSS (dat.z.gn, model = tmp.model.list, z.score = TRUE, form = "dfa")
-tmp.fitname <- paste ("tmp.kemz", tmp.model.list$m, tmp.model.list$R, sep = ".")
-tmp.best.fit <- get (tmp.fitname)
+# tmp.model.list <- list (m = 2, R = "equalvarcov")
+# tmp.DFA.2 <- MARSS (dat.z.gn, model = tmp.model.list, z.score = TRUE, form = "dfa")
+# tmp.fitname <- paste ("tmp.kemz", tmp.model.list$m, tmp.model.list$R, sep = ".")
+# tmp.best.fit <- get (tmp.fitname)
 
 cntl.list <- list (minit = 200, maxit = 5000, allow.degen = FALSE)
 
@@ -128,6 +132,7 @@ levels.R <- c ("diagonal and equal",
 model.data.top.gn <- data.frame()
 
 dat.z.gn <- as.matrix (gn.top.mn.ts[,-1]) # remove spp column
+write.csv (dat.z.gn, file = "./Data_tables/Top_gn_DFA_matrix.csv")
 
 for (R in levels.R) { 
   for (m in 1:5) { # don't try more than 5 common trends
@@ -180,3 +185,69 @@ save (best.fit.top.gn, file = "./Output/DFA_top_gn_best_fit.RData")
 # I think these work
 save (best.model.top.gn, file = "./Output/DFA_top_gn_best_model.RData")
 save (model.tbl.top.gn, file = "./Output/DFA_top_gn_model_table.RData")
+
+
+
+#### Now for Salaverry
+
+model.data.top.svry <- data.frame()
+
+dat.z.svry <- as.matrix (svry.top.mn.ts[,-1]) # remove spp column
+
+for (R in levels.R) { 
+  for (m in 1:5) { # don't try more than 5 common trends
+    dfa.model  <-  list (A = "zero", R = R, m = m)
+    kemz <- MARSS (dat.z.svry, model = dfa.model, 
+                   control = cntl.list, form = "dfa", z.score = TRUE)
+    model.data.top.svry  <-  rbind (model.data.top.svry,
+                                  data.frame (R = R, m = m,
+                                              logLik = kemz$logLik,
+                                              K = kemz$num.params,
+                                              AICc = kemz$AICc,
+                                              stringsAsFactors = FALSE))
+    assign (paste ("kemz", m, R, sep = "."), kemz)
+  } # end m loop
+} # end R loop
+
+# make model table to summarize results
+
+# Calculate delta-AICc (difference between model AICc and lowest AICc)
+model.data.top.svry$delta.AICc = model.data.top.svry$AICc - min (model.data.top.svry$AICc)
+
+# Calculate Akaike weights
+wt = exp ( -0.5 * model.data.top.svry$delta.AICc)
+model.data.top.svry$Ak.wt = wt / sum (wt)
+
+# sort results
+model.tbl.top.svry <- model.data.top.svry [ order (model.data.top.svry$AICc), -4]
+# drop AICc from table
+
+# calculate cumulative wts
+model.tbl.top.svry$Ak.wt.cum <- cumsum (model.tbl.top.svry$Ak.wt)
+model.tbl.top.svry <- model.tbl.top.svry[, -4]
+
+# get the "best" model
+best.model.top.svry  <-  model.tbl.top.svry[1,]
+fitname.top.svry <- paste ("top.svry.kemz", best.model.top.svry$m, best.model.top.svry$R, sep = ".")
+best.fit.top.svry <- get (fitname.top.svry)
+
+#### This isn't working. says top.gn.kemz.2.equalvarcov not found. But if I know it's the best model, can I just run that one and save it?
+# gn.top.best.model.list <- list (m = 2, R = "equalvarcov")
+# gn.top.dfa.2.equalvarcov <- MARSS (dat.z.gn, model = gn.top.best.model.list, z.score = TRUE, form = "dfa")
+
+# Save in output folder
+# 
+# save (svry.top.dfa.2.equalvarcov, file = "./Output/Manual_DFA_top_gn_MARSS_output.RData")
+
+# this doesn't work
+save (best.fit.top.svry, file = "./Output/DFA_top_svry_best_fit.RData")
+
+# Instead, calculate manually--bet had 1 trend and diagonal and equal
+svry.top.best.model.list <- list (m = 1, R = "diagonal and equal")
+svry.top.dfa.1.diagandequal <- MARSS (dat.z.svry, model = svry.top.best.model.list, z.score = TRUE, form = "dfa")
+
+save (svry.top.dfa.1.diagandequal, file = "./Output/Manual_DFA_top_svry_MARSS_output.RData")
+
+# I think these work
+save (best.model.top.svry, file = "./Output/DFA_top_svry_best_model.RData")
+save (model.tbl.top.svry, file = "./Output/DFA_top_svry_model_table.RData")
