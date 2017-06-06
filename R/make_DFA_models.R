@@ -76,7 +76,8 @@ svry.catch <- rbind (select (svry.shark, Species, Year, Lance.code),
                      select (svry.bird, Species, Year, Lance.code))
 
 svry.catch.set <- group_by (svry.catch, Species, Lance.code) %>%
-  summarise (TotCat = n(), Year = mean (Year, na.rm = TRUE))
+  summarise (TotCat = n(), Year = mean (Year, na.rm = TRUE)) %>%
+  filter (Year > 0)
 
 top.svry.shark <- group_by (svry.shark, Species) %>%
   summarise (count = n()) %>%
@@ -98,7 +99,7 @@ top.svry.bird <- group_by (svry.bird, Species) %>%
   arrange (desc (count)) %>%
   top_n (2)
 
-svry.top.catch.set <- filter (svry.catch.set, Species %in% top.svry.shark$Species | Species %in% top.svry.mamm$Species | Species %in% top.svry.bird$Species | Species %in% top.svry.turt$Species)
+svry.top.catch.set <- filter (svry.catch.set, Species %in% top.svry.shark$Species | Species %in% top.svry.mamm$Species | Species %in% top.svry.bird$Species | Species %in% top.svry.turt$Species) 
 
 # Time series with species as rows and season as columns
 
