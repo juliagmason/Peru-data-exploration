@@ -1,0 +1,91 @@
+---
+title: "Gillnet DFA exploration"
+output:
+  pdf_document: default
+  html_notebook: default
+date: "June 01, 2017"
+---
+
+This is for the top sharks, turtles, mammals, and birds caught in gillnets. 23 species: 10 sharks, 5 mammals, 4 turtles, 4 birds. 
+
+Plot z-scored trends for all gillnets
+```{r, z-scored top 10 trends, echo = FALSE, fig.align='center'}
+gn.top.mn.ts <- read.csv("../Data_tables/Top_gn_DFA_ts.csv")
+dat.z.gn <- as.matrix (gn.top.mn.ts[,-1]) # remove spp column
+
+Sigma.gn = sqrt(apply(dat.z.gn, 1, var, na.rm=TRUE)) 
+y.bar.gn = apply(dat.z.gn, 1, mean, na.rm=TRUE) 
+z.sco.gn = (dat.z.gn - y.bar.gn) * (1/Sigma.gn)
+
+years = colnames (z.sco.gn)
+
+spp.gn <- gn.top.mn.ts$Species
+
+par(mfcol=c(5,2), mar=c(3,4,1.5,0.5), oma=c(0.4,1,1,1))
+for(i in 1:length(spp.gn)){
+  #plot(years, z.sco[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", type="b")
+  plot(z.sco.gn[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", xaxt = "n", type="b")
+  axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5) )# can't get this to work
+  title(spp.gn[i])
+  }
+```
+
+Plot factor loadings
+```{r, plot factor loadings, echo = FALSE, fig.align= 'center'}
+load ("../Output/DFA_top_gn_best_fit.RData")
+load ("../Output/DFA_top_gn_best_model.RData")
+
+# determine loadings and trends
+
+H.inv.gn = varimax (coef (best.fit.top.gn, type = "matrix") $ Z) $ rotmat
+
+# rotate factor loadings
+Z.rot.gn = coef (best.fit.top.gn, type = "matrix") $ Z %*% H.inv.gn
+
+# rotate trends
+trends.rot.gn = solve (H.inv.gn) %*% best.fit.top.gn$states
+
+# Plot
+N.ts.gn = 23
+minZ = 0.05
+ylims = c(-1.1*max(abs(Z.rot.gn)), 1.1*max(abs(Z.rot.gn)))
+
+for (i in 1:best.model.top.gn$m) {
+plot(c (1:N.ts.gn)[abs (Z.rot.gn[,i]) > minZ], 
+     as.vector(Z.rot.gn[abs(Z.rot.gn[,i]) > minZ, i]),
+       type = "h", lwd = 2, xlab = "", ylab = "", xaxt = "n", ylim = ylims, xlim = c(0, N.ts.gn + 1))
+  for(j in 1:N.ts.gn) {
+    if(Z.rot.gn[j,i] > minZ) {text(j, -0.05, spp.gn[j], srt = 90, adj = 1, cex = 0.9)}
+    if(Z.rot.gn[j,i] < -minZ) {text(j, 0.05, spp.gn[j], srt = 90, adj = 0, cex = 0.9)}
+    abline(h = 0, lwd = 1, col = "gray")
+  } # end j loop
+  mtext (paste ("Factor loadings on trend", i, sep = " "), side = 3, line = 0.5)
+} # end i loop
+
+```
+
+Plot trends
+```{r, plot trends, echo = FALSE, fig.align = "center"}
+
+ts.trends.gn <- t(trends.rot.gn)
+
+for (i in 1:dim (ts.trends.gn)[2]) {
+  # set up plot area
+  plot ( ts.trends.gn[,i],
+        ylim = c(-1.1, 1.1) * max (abs (ts.trends.gn)),
+        type = "n", lwd = 2, bty = "L",
+        xlab = "", ylab = "", yaxt="n", xaxt = "n")
+  # Draw zero line
+  abline (h = 0, col = "gray")
+  # Plot trend line
+  par (new = TRUE)
+  plot ( ts.trends.gn[,i],
+        ylim = c(-1.1, 1.1) * max (abs (ts.trends.gn)),
+        type = "l", lwd = 2, bty = "L",
+        xlab = "", ylab = "", xaxt = "n")
+  # Add panel labels
+  mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
+  axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
+} # end i loop
+
+```
