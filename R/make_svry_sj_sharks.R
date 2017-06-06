@@ -11,11 +11,11 @@ gn.trips$Fecha.de.zarpe <- as.Date (gn.trips$Fecha.de.zarpe, format = "%Y-%m-%d"
 svry.trip <- filter (gn.trips, Lugar.de.zarpe == "Salaverry", Fecha.de.zarpe >= "2005-01-01")
 svry.trip.extra <- filter (gn.trips, Trip.code %in% c(264, 564, 1433))
 svry.trip <- rbind (svry.trip, svry.trip.extra) # 289 trips
-write.csv (svry.trip, file = "./Data_tables/svry_trip.csv")
+write.csv (svry.trip, file = "./Data_tables/svry_trip.csv", row.names = FALSE)
 
 
 svry.sharks <- filter (sharks, trip.code %in% svry.trip$Trip.code) # 8615 sharks
-write.csv (svry.sharks, file = "../PDsharks/Salaverry_sharks.csv")
+write.csv (svry.sharks, file = "../PDsharks/Salaverry_sharks.csv", row.names = FALSE)
 
 sj.trip <- filter (gn.trips, Lugar.de.zarpe == "San Jose" | Lugar.de.zarpe == "Bayovar" | Lugar.de.zarpe == "bayovar")
 sj.trip.extra <- filter (gn.trips, Trip.code == 599) # ? this doesn't exist anymore
@@ -24,4 +24,4 @@ sj.trip <- rbind (sj.trip, sj.trip.extra) # 94 trips
 
 sj.sharks <- filter (sharks, trip.code %in% sj.trip$Trip.code) # 3776 sharks
 
-write.csv (sj.sharks, file = "../PDsharks/SanJose_sharks.csv")
+write.csv (sj.sharks, file = "../PDsharks/SanJose_sharks.csv", row.names = FALSE)
