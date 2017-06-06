@@ -10,6 +10,11 @@ This is for the top sharks, turtles, mammals, and birds caught in gillnets. 23 s
 
 Plot z-scored trends for all gillnets
 ```{r, z-scored top 10 trends, echo = FALSE, fig.align='center'}
+
+# load ("Z:/Julia/Peru/Peru_data_exploration/Output/DFA_top_gn_best_fit.RData")
+# load ("Z:/Julia/Peru/Peru_data_exploration/Output/DFA_top_gn_best_model.RData")
+
+
 gn.top.mn.ts <- read.csv("../Data_tables/Top_gn_DFA_ts.csv")
 dat.z.gn <- as.matrix (gn.top.mn.ts[,-1]) # remove spp column
 
@@ -21,13 +26,15 @@ years = colnames (z.sco.gn)
 
 spp.gn <- gn.top.mn.ts$Species
 
+#pdf (file = "../Output/GN_CPUE_Zscored_trends.pdf")
 par(mfcol=c(5,2), mar=c(3,4,1.5,0.5), oma=c(0.4,1,1,1))
 for(i in 1:length(spp.gn)){
   #plot(years, z.sco[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", type="b")
   plot(z.sco.gn[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", xaxt = "n", type="b")
   axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5) )# can't get this to work
   title(spp.gn[i])
-  }
+}
+#dev.off()
 ```
 
 Plot factor loadings
@@ -50,6 +57,7 @@ N.ts.gn = 23
 minZ = 0.05
 ylims = c(-1.1*max(abs(Z.rot.gn)), 1.1*max(abs(Z.rot.gn)))
 
+pdf (file = "../Output/GN_CPUE_factor_loadings.pdf")
 for (i in 1:best.model.top.gn$m) {
 plot(c (1:N.ts.gn)[abs (Z.rot.gn[,i]) > minZ], 
      as.vector(Z.rot.gn[abs(Z.rot.gn[,i]) > minZ, i]),
@@ -61,6 +69,7 @@ plot(c (1:N.ts.gn)[abs (Z.rot.gn[,i]) > minZ],
   } # end j loop
   mtext (paste ("Factor loadings on trend", i, sep = " "), side = 3, line = 0.5)
 } # end i loop
+dev.off()
 
 ```
 
@@ -69,6 +78,7 @@ Plot trends
 
 ts.trends.gn <- t(trends.rot.gn)
 
+pdf (file = "../Output/GN_CPUE_DFA_trends.pdf")
 for (i in 1:dim (ts.trends.gn)[2]) {
   # set up plot area
   plot ( ts.trends.gn[,i],
@@ -87,5 +97,148 @@ for (i in 1:dim (ts.trends.gn)[2]) {
   mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
   axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
 } # end i loop
+dev.off()
 
 ```
+
+Add covariates
+```{r, covariates, echo = FALSE}
+# ONI: http://ggweather.com/enso/oni.htm
+# has to be numeric. codes for neutral is zero, weak is +-1, medium is +-2, VS is +-4
+oni.num <- c(0,1,-2,0,2, -2, -1, 0,0,0,4, -1)
+
+pdo <- c(0.29, 0.06, -1.16, -0.97, -0.47, -0.62, -1.44, -1.23, -0.60, 1.13, 1.57, 1.31)
+
+model.list.gn <- list(m = 2, R = "equalvarcov") 
+cntl.list <-  list(minit = 200, maxit = 5000, allow.degen = FALSE) 
+
+kemz.gn.oni <-  MARSS(dat.z.gn, model = model.list.gn, z.score = TRUE, form = "dfa", control = cntl.list, covariates = oni.num)
+
+kemz.gn.pdo  <- MARSS(dat.z.gn, model = model.list.gn, z.score = TRUE, form = "dfa", control = cntl.list, covariates = pdo)
+
+kemz.gn.both  <- MARSS(dat.z.gn, model = model.list.gn, z.score = TRUE, form = "dfa", control = cntl.list, covariates = rbind(oni.num, pdo))
+
+```
+
+Is it better?
+
+```{r, AIC, echo = FALSE}
+print(cbind(model=c("no covars", "ONI", "PDO", "ONI & PDO"), AICc=round(c(best.fit.top.gn$AICc, kemz.gn.oni$AICc, kemz.gn.pdo$AICc, kemz.gn.both$AICc))), quote=FALSE)
+```
+
+Covariates do not improve the model. 
+
+
+### Now with Salaverry
+
+
+This is for the top sharks, turtles, mammals, and birds caught in gillnets JUST in Salaverry.16 species: 6 sharks, 4 mammals, 4 turtles, 2 birds. 
+
+Plot z-scored trends for all gillnets
+```{r, svry z-scored top 10 trends, echo = FALSE, fig.align='center'}
+
+svry.top.mn.ts <- read.csv("../Data_tables/Top_svry_DFA_ts.csv")
+dat.z.svry <- as.matrix (svry.top.mn.ts[,-1]) # remove spp column
+
+Sigma.svry = sqrt(apply(dat.z.svry, 1, var, na.rm=TRUE)) 
+y.bar.svry = apply(dat.z.svry, 1, mean, na.rm=TRUE) 
+z.sco.svry = (dat.z.svry - y.bar.svry) * (1/Sigma.svry)
+
+years = colnames (z.sco.svry)
+
+spp.svry <- svry.top.mn.ts$Species
+
+pdf (file = "../Output/svry_CPUE_Zscored_trends.pdf")
+par(mfcol=c(5,2), mar=c(3,4,1.5,0.5), oma=c(0.4,1,1,1))
+for(i in 1:length(spp.svry)){
+  #plot(years, z.sco[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", type="b")
+  plot(z.sco.svry[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", xaxt = "n", type="b")
+  axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5) )# can't get this to work
+  title(spp.svry[i])
+}
+dev.off()
+```
+
+Plot factor loadings
+```{r, plot svry factor loadings, echo = FALSE, fig.align= 'center'}
+load ("../Output/DFA_top_svry_best_fit.RData")
+load ("../Output/DFA_top_svry_best_model.RData")
+
+H.inv.svry = varimax (coef (best.fit.top.svry, type = "matrix") $ Z) $ rotmat
+
+# rotate factor loadings
+Z.rot.svry = coef (best.fit.top.svry, type = "matrix") $ Z %*% H.inv.svry
+
+# rotate trends
+trends.rot.svry = solve (H.inv.svry) %*% best.fit.top.svry$states
+
+
+# Plot
+N.ts.svry = 16
+minZ = 0.05
+ylims = c(-1.1*max(abs(Z.rot.svry)), 1.1*max(abs(Z.rot.svry)))
+
+pdf (file = "../Output/svry_CPUE_factor_loadings.pdf")
+for (i in 1:best.model.top.svry$m) {
+plot(c (1:N.ts.svry)[abs (Z.rot.svry[,i]) > minZ], 
+     as.vector(Z.rot.svry[abs(Z.rot.svry[,i]) > minZ, i]),
+       type = "h", lwd = 2, xlab = "", ylab = "", xaxt = "n", ylim = ylims, xlim = c(0, N.ts.svry + 1))
+  for(j in 1:N.ts.svry) {
+    if(Z.rot.svry[j,i] > minZ) {text(j, -0.05, spp.svry[j], srt = 90, adj = 1, cex = 0.9)}
+    if(Z.rot.svry[j,i] < -minZ) {text(j, 0.05, spp.svry[j], srt = 90, adj = 0, cex = 0.9)}
+    abline(h = 0, lwd = 1, col = "gray")
+  } # end j loop
+  mtext (paste ("Factor loadings on trend", i, sep = " "), side = 3, line = 0.5)
+}
+dev.off()
+
+```
+
+Plot trends
+```{r, plot wvry trends, echo = FALSE, fig.align = "center"}
+
+ts.trends.svry <- t(trends.rot.svry)
+
+pdf (file = "../Output/svry_CPUE_DFA_trends.pdf")
+for (i in 1:dim (ts.trends.svry)[2]) {
+  # set up plot area
+  plot ( ts.trends.svry[,i],
+        ylim = c(-1.1, 1.1) * max (abs (ts.trends.svry)),
+        type = "n", lwd = 2, bty = "L",
+        xlab = "", ylab = "", yaxt="n", xaxt = "n")
+  # Draw zero line
+  abline (h = 0, col = "gray")
+  # Plot trend line
+  par (new = TRUE)
+  plot ( ts.trends.svry[,i],
+        ylim = c(-1.1, 1.1) * max (abs (ts.trends.svry)),
+        type = "l", lwd = 2, bty = "L",
+        xlab = "", ylab = "", xaxt = "n")
+  # Add panel labels
+   mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
+  axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
+}
+dev.off()
+
+```
+
+Add covariates
+```{r, svry covariates, echo = FALSE}
+
+model.list.svry <- list(m = 2, R = "diagonal and equal") 
+cntl.list <-  list(minit = 200, maxit = 5000, allow.degen = FALSE) 
+
+kemz.svry.oni <-  MARSS(dat.z.svry, model = model.list.svry, z.score = TRUE, form = "dfa", control = cntl.list, covariates = oni.num)
+
+kemz.svry.pdo  <- MARSS(dat.z.svry, model = model.list.svry, z.score = TRUE, form = "dfa", control = cntl.list, covariates = pdo)
+
+kemz.svry.both  <- MARSS(dat.z.svry, model = model.list.svry, z.score = TRUE, form = "dfa", control = cntl.list, covariates = rbind(oni.num, pdo))
+
+```
+
+Is it better?
+
+```{r, AIC, echo = FALSE}
+print(cbind(model=c("no covars", "ONI", "PDO", "ONI & PDO"), AICc=round(c(best.fit.top.svry$AICc, kemz.svry.oni$AICc, kemz.svry.pdo$AICc, kemz.svry.both$AICc))), quote=FALSE)
+```
+nope.
