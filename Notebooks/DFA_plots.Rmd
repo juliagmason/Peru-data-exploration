@@ -101,6 +101,26 @@ dev.off()
 
 ```
 
+Plot fits
+```{r, plot model fits gn}
+# TT = length of time series
+TT <- 12
+par.mat.gn <- coef (best.fit.top.gn, type = "matrix")
+fit.b.gn <- par.mat.gn$Z %*% best.fit.top.gn$states + matrix (par.mat.gn$A, nrow = N.ts.gn, ncol = TT)
+
+pdf (file = "../Output/GN_CPUE_DFA_fits.pdf")
+par (mfcol = c (3, 2), mar = c(3, 4, 1.5, 0.5), oma = c(0.4, 1, 1, 1))
+for (i in 1:length (spp.gn)) {
+plot(dat.z.gn[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n", ylim = c (min( fit.b.gn[i,]), 2* max (dat.z.gn[i,])), 
+     pch = 16, col = "blue")
+ axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5))
+ lines (fit.b.gn[i,], lwd = 2)
+ title (spp.gn[i])
+}
+dev.off()
+
+```
+
 Add covariates
 ```{r, covariates, echo = FALSE}
 # ONI: http://ggweather.com/enso/oni.htm
@@ -217,6 +237,26 @@ for (i in 1:dim (ts.trends.svry)[2]) {
   # Add panel labels
    mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
   axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
+}
+dev.off()
+
+```
+
+Plot fits
+```{r, plot model fits svry}
+# TT = length of time series
+TT <- 12
+par.mat.svry <- coef (best.fit.top.svry, type = "matrix")
+fit.b.svry <- par.mat.svry$Z %*% best.fit.top.svry$states + matrix (par.mat.svry$A, nrow = N.ts.svry, ncol = TT)
+
+pdf (file = "../Output/svry_CPUE_DFA_fits.pdf")
+par (mfcol = c (3, 2), mar = c(3, 4, 1.5, 0.5), oma = c(0.4, 1, 1, 1))
+for (i in 1:length (spp.svry)) {
+plot(dat.z.svry[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n", ylim = c (min( fit.b.svry[i,]), 2* max (dat.z.svry[i,])), 
+     pch = 16, col = "blue")
+ axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5))
+ lines (fit.b.svry[i,], lwd = 2)
+ title (spp.svry[i])
 }
 dev.off()
 
