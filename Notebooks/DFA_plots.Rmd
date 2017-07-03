@@ -10,7 +10,7 @@ This is for the top sharks, turtles, mammals, and birds caught in gillnets. 23 s
 
 Plot z-scored trends for all gillnets
 ```{r, z-scored top 10 trends, echo = FALSE, fig.align='center'}
-
+library (MARSS)
 # load ("Z:/Julia/Peru/Peru_data_exploration/Output/DFA_top_gn_best_fit.RData")
 # load ("Z:/Julia/Peru/Peru_data_exploration/Output/DFA_top_gn_best_model.RData")
 
@@ -57,7 +57,7 @@ N.ts.gn = 23
 minZ = 0.05
 ylims = c(-1.1*max(abs(Z.rot.gn)), 1.1*max(abs(Z.rot.gn)))
 
-pdf (file = "../Output/GN_CPUE_factor_loadings.pdf")
+#pdf (file = "../Output/GN_CPUE_factor_loadings.pdf")
 for (i in 1:best.model.top.gn$m) {
 plot(c (1:N.ts.gn)[abs (Z.rot.gn[,i]) > minZ], 
      as.vector(Z.rot.gn[abs(Z.rot.gn[,i]) > minZ, i]),
@@ -69,7 +69,7 @@ plot(c (1:N.ts.gn)[abs (Z.rot.gn[,i]) > minZ],
   } # end j loop
   mtext (paste ("Factor loadings on trend", i, sep = " "), side = 3, line = 0.5)
 } # end i loop
-dev.off()
+#dev.off()
 
 ```
 
@@ -78,7 +78,7 @@ Plot trends
 
 ts.trends.gn <- t(trends.rot.gn)
 
-pdf (file = "../Output/GN_CPUE_DFA_trends.pdf")
+#pdf (file = "../Output/GN_CPUE_DFA_trends.pdf")
 for (i in 1:dim (ts.trends.gn)[2]) {
   # set up plot area
   plot ( ts.trends.gn[,i],
@@ -97,7 +97,7 @@ for (i in 1:dim (ts.trends.gn)[2]) {
   mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
   axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
 } # end i loop
-dev.off()
+#dev.off()
 
 ```
 
@@ -108,7 +108,7 @@ TT <- 12
 par.mat.gn <- coef (best.fit.top.gn, type = "matrix")
 fit.b.gn <- par.mat.gn$Z %*% best.fit.top.gn$states + matrix (par.mat.gn$A, nrow = N.ts.gn, ncol = TT)
 
-pdf (file = "../Output/GN_CPUE_DFA_fits.pdf")
+#pdf (file = "../Output/GN_CPUE_DFA_fits.pdf")
 par (mfcol = c (3, 2), mar = c(3, 4, 1.5, 0.5), oma = c(0.4, 1, 1, 1))
 for (i in 1:length (spp.gn)) {
 plot(dat.z.gn[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n", ylim = c (min( fit.b.gn[i,]), 2* max (dat.z.gn[i,])), 
@@ -117,12 +117,12 @@ plot(dat.z.gn[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n", y
  lines (fit.b.gn[i,], lwd = 2)
  title (spp.gn[i])
 }
-dev.off()
+#dev.off()
 
 ```
 
 Add covariates
-```{r, covariates, echo = FALSE}
+```{r, covariates, echo = FALSE, eval = FALSE}
 # ONI: http://ggweather.com/enso/oni.htm
 # has to be numeric. codes for neutral is zero, weak is +-1, medium is +-2, VS is +-4
 oni.num <- c(0,1,-2,0,2, -2, -1, 0,0,0,4, -1)
@@ -142,7 +142,7 @@ kemz.gn.both  <- MARSS(dat.z.gn, model = model.list.gn, z.score = TRUE, form = "
 
 Is it better?
 
-```{r, AIC, echo = FALSE}
+```{r, AIC, echo = FALSE,eval = FALSE}
 print(cbind(model=c("no covars", "ONI", "PDO", "ONI & PDO"), AICc=round(c(best.fit.top.gn$AICc, kemz.gn.oni$AICc, kemz.gn.pdo$AICc, kemz.gn.both$AICc))), quote=FALSE)
 ```
 
@@ -168,7 +168,7 @@ years = colnames (z.sco.svry)
 
 spp.svry <- svry.top.mn.ts$Species
 
-pdf (file = "../Output/svry_CPUE_Zscored_trends.pdf")
+#pdf (file = "../Output/svry_CPUE_Zscored_trends.pdf")
 par(mfcol=c(5,2), mar=c(3,4,1.5,0.5), oma=c(0.4,1,1,1))
 for(i in 1:length(spp.svry)){
   #plot(years, z.sco[i,], xlab="",ylab="CPUE index", bty="L", pch=16, col="blue", type="b")
@@ -176,7 +176,7 @@ for(i in 1:length(spp.svry)){
   axis(1, at = seq (0,11, by = 5), labels = seq(2005, 2016, by = 5) )# can't get this to work
   title(spp.svry[i])
 }
-dev.off()
+#dev.off()
 ```
 
 Plot factor loadings
@@ -198,7 +198,7 @@ N.ts.svry = 16
 minZ = 0.05
 ylims = c(-1.1*max(abs(Z.rot.svry)), 1.1*max(abs(Z.rot.svry)))
 
-pdf (file = "../Output/svry_CPUE_factor_loadings.pdf")
+#pdf (file = "../Output/svry_CPUE_factor_loadings.pdf")
 for (i in 1:best.model.top.svry$m) {
 plot(c (1:N.ts.svry)[abs (Z.rot.svry[,i]) > minZ], 
      as.vector(Z.rot.svry[abs(Z.rot.svry[,i]) > minZ, i]),
@@ -210,7 +210,7 @@ plot(c (1:N.ts.svry)[abs (Z.rot.svry[,i]) > minZ],
   } # end j loop
   mtext (paste ("Factor loadings on trend", i, sep = " "), side = 3, line = 0.5)
 }
-dev.off()
+#dev.off()
 
 ```
 
@@ -219,7 +219,7 @@ Plot trends
 
 ts.trends.svry <- t(trends.rot.svry)
 
-pdf (file = "../Output/svry_CPUE_DFA_trends.pdf")
+#pdf (file = "../Output/svry_CPUE_DFA_trends.pdf")
 for (i in 1:dim (ts.trends.svry)[2]) {
   # set up plot area
   plot ( ts.trends.svry[,i],
@@ -238,7 +238,7 @@ for (i in 1:dim (ts.trends.svry)[2]) {
    mtext (paste ("Trend", i, sep = " "), side = 3, line = -2, cex = 1.5, font = 2)
   axis(1, at = seq (0,11, by = 2), labels = seq(2005, 2016, by = 2))
 }
-dev.off()
+#dev.off()
 
 ```
 
@@ -249,7 +249,7 @@ TT <- 12
 par.mat.svry <- coef (best.fit.top.svry, type = "matrix")
 fit.b.svry <- par.mat.svry$Z %*% best.fit.top.svry$states + matrix (par.mat.svry$A, nrow = N.ts.svry, ncol = TT)
 
-pdf (file = "../Output/svry_CPUE_DFA_fits.pdf")
+#pdf (file = "../Output/svry_CPUE_DFA_fits.pdf")
 par (mfcol = c (3, 2), mar = c(3, 4, 1.5, 0.5), oma = c(0.4, 1, 1, 1))
 for (i in 1:length (spp.svry)) {
 plot(dat.z.svry[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n", ylim = c (min( fit.b.svry[i,]), 2* max (dat.z.svry[i,])), 
@@ -258,12 +258,12 @@ plot(dat.z.svry[i,], xlab = "", ylab = "abundance index", bty = "L", xaxt = "n",
  lines (fit.b.svry[i,], lwd = 2)
  title (spp.svry[i])
 }
-dev.off()
+#dev.off()
 
 ```
 
 Add covariates
-```{r, svry covariates, echo = FALSE}
+```{r, svry covariates, echo = FALSE, eval = FALSE}
 
 model.list.svry <- list(m = 2, R = "diagonal and equal") 
 cntl.list <-  list(minit = 200, maxit = 5000, allow.degen = FALSE) 
@@ -278,7 +278,7 @@ kemz.svry.both  <- MARSS(dat.z.svry, model = model.list.svry, z.score = TRUE, fo
 
 Is it better?
 
-```{r, AIC, echo = FALSE}
+```{r, svry AIC, echo = FALSE, eval = FALSE}
 print(cbind(model=c("no covars", "ONI", "PDO", "ONI & PDO"), AICc=round(c(best.fit.top.svry$AICc, kemz.svry.oni$AICc, kemz.svry.pdo$AICc, kemz.svry.both$AICc))), quote=FALSE)
 ```
 nope.
