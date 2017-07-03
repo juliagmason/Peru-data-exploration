@@ -18,7 +18,9 @@ trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
+trips <- trips[,-1] # remove stupid row.names column. 
 
+### This was doene on raw trips and saved as cleaned_trips 7/3/2017
 # Need to clean objective species
 # trips$Objective.species <- gsub ("Tiburon", "tiburon", trips$Objective.species)
 # trips$Objective.species <- gsub ("tiburones", "tiburon", trips$Objective.species)
@@ -61,7 +63,7 @@ trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
 # I manually changed species with commas to be in objective 2 or 3 in cleaned_trips. If there are more than 3, the other species are listed in species 3, separated by commas. I also missed a few of these changes and made them manually in cleaned trips (Tollo Gatita in 3, angelota and Angelote in 2, tollo mama in 2, Raya in 2)
 
-trips <- read_csv ("./Data_tables/cleaned_trips.csv")
+#trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 
 # that was hasty....still have cleaning to do. clean ports: 
 trips$puerto.de.llegada <- gsub ("constante", "Constante", trips$puerto.de.llegada)
@@ -179,6 +181,48 @@ trips$capture.species.7 <- gsub ("pez iguana", "iguana", trips$capture.species.7
 trips$capture.species.7 <- gsub ("T", "t", trips$capture.species.7)
 trips$capture.species.7 <- gsub ("tollo ", "", trips$capture.species.7)
 trips$capture.species.7 <- gsub ("toyo", "tollo", trips$capture.species.7)
+
+# quantity units
+trips$Quantity.Units.1 <- gsub ("i", "I", trips$Quantity.Units.1)
+trips$Quantity.Units.1 <- gsub ("k", "K", trips$Quantity.Units.1)
+trips$Quantity.Units.2 <- gsub ("i", "I", trips$Quantity.Units.2)
+trips$Quantity.Units.2 <- gsub ("k", "K", trips$Quantity.Units.2)
+trips$Quantity.Units.3 <- gsub ("i", "I", trips$Quantity.Units.3)
+trips$Quantity.Units.3 <- gsub ("k", "K", trips$Quantity.Units.3)
+trips$Quantity.Units.4 <- gsub ("i", "I", trips$Quantity.Units.4)
+trips$Quantity.Units.4 <- gsub ("k", "K", trips$Quantity.Units.4)
+trips$Quantity.Units.5 <- gsub ("i", "I", trips$Quantity.Units.5)
+trips$Quantity.Units.5 <- gsub ("k", "K", trips$Quantity.Units.5)
+trips$Quantity.Units.6 <- gsub ("i", "I", trips$Quantity.Units.6)
+trips$Quantity.Units.6 <- gsub ("k", "K", trips$Quantity.Units.6)
+trips$Quantity.Units.7 <- gsub ("i", "I", trips$Quantity.Units.7)
+trips$Quantity.Units.7 <- gsub ("k", "K", trips$Quantity.Units.7)
+
+# units
+trips$pane.size.units <- gsub ("b", "B", trips$pane.size.units)
+trips$pane.size.units <- gsub ("m", "M", trips$pane.size.units)
+trips$mesh.size.units <- gsub ("p", "P", trips$mesh.size.units)
+
+trips$Net.depth.units <- gsub ("b", "B", trips$Net.depth.units)
+trips$Net.depth.units <- gsub ("m", "M", trips$Net.depth.units)
+
+trips$pane.2.units <- gsub ("b", "B", trips$pane.2.units)
+trips$pane.2.units <- gsub ("p", "B", trips$pane.2.units) ## no way is a pane in inches...?
+trips$pane.2.mesh.size.units <- gsub ("p", "P", trips$pane.2.mesh.size.units)
+trips$pane.2.mesh.size.units <- gsub ("b", "P", trips$pane.2.mesh.size.units) ## I checked, these should be p. 
+
+trips$pane.3.units <- gsub ("b", "B", trips$pane.3.units)
+trips$pane.3.mesh.size.units <- gsub ("p", "P", trips$pane.3.mesh.size.units)
+
+trips$mixed.pane.1.units <- gsub ("b", "B", trips$mixed.pane.1.units)
+trips$mixed.pane.1.mesh.units <- gsub ("p", "P", trips$mixed.pane.1.mesh.units)
+
+trips$mixed.pane.2.units <- gsub ("b", "B", trips$mixed.pane.1.units)
+trips$mixed.pane.2.mesh.units <- gsub ("p", "P", trips$mixed.pane.2.mesh.units)
+
+
+## Can't overwrite the same file, it denies!
+write.csv (trips, "./Data_tables/cleaned_trips.csv", row.names = FALSE)
 
 #######################################################
 ### SETS
@@ -451,12 +495,12 @@ set.DLL$Year <- year(set.DLL$Date)
 
 set.DLL$Lance.code <- as.character( (set.DLL$Lance.code))
 
-write.csv (set.DLL, file = "./Data_tables/set_DLL.csv")
+#write.csv (set.DLL, file = "./Data_tables/set_DLL.csv")
 
 sets <- cbind (sets, set.DLL$Date, set.DLL$MY)
 colnames(sets)[84:85] <- c("Date", "MY")
 
-write.csv (sets, file = "./Data_tables/cleaned_sets.csv")
+#write.csv (sets, file = "./Data_tables/cleaned_sets.csv")
 
 turtles <- read.csv("./Raw_data/Turtles_main.csv")
 
