@@ -38,9 +38,11 @@ write.csv (sj.sharks, file = "../PDsharks/SanJose_sharks.csv", row.names = FALSE
 # Also write csv of svry shark trips
 
 svry.shark.trips <- filter (gn.trips, Trip.code %in% svry.sharks$Trip.code)
-write.csv (svry.shark.trips, file = "../PDsharks/Svry_shark_trips.csv")
+write.csv (svry.shark.trips, file = "../PDsharks/Svry_shark_trips.csv", row.names = FALSE)
 
 
 ### Also shark sets? These are sets that caught sharks, not all sets from trips targeting sharks. It might be worth also looking at trips/sets that targeted sharks but didn't catch them. 
 svry.shark.sets <- read_csv ("./Data_tables/cleaned_sets.csv") %>%
   filter (Lance.code %in% svry.sharks$Lance.code)
+
+write.csv (svry.shark.sets, file = "../PDsharks/Svry_shark_sets.csv", row.names = FALSE)
