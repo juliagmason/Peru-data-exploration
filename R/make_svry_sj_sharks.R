@@ -5,6 +5,7 @@ library (tidyverse)
 
 gn.trips <- read.csv ("./Data_tables/probable_gillnets.csv")
 gn.trips$Fecha.de.zarpe <- as.Date (gn.trips$Fecha.de.zarpe, format = "%Y-%m-%d")
+gn.trips$fecha.de.llegada <- as.Date (gn.trips$fecha.de.llegada, format = "%Y-%m-%d")
 
 set.DLL <- read.csv("./Data_tables/set_DLL.csv")
 set.DLL$Lance.code <- as.character( (set.DLL$Lance.code))
