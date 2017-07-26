@@ -27,6 +27,10 @@ for ( i in 1:nrow (gn.trips)) {
   gn.total.pane.length[i] <- sum(pane1, pane2, pane3, na.rm = TRUE)/1000
 }
 
+# if all three were NA, the sum becomes 0. I want that to be NA. 
+
+gn.total.pane.length[which (gn.total.pane.length == 0)] <- NA
+
 # I should be able to do this without a for loop but this isn't working...
 # gn.km.day <- gn.trips %>%
 #   mutate (net.km = sum (ifelse (Trip.code < 1180, panes * pane.1.length.std, pane.1 * pane.1.length.std), pane.2 * pane.2.length, pane.3 * pane.3.length, na.rm = TRUE))
@@ -49,5 +53,5 @@ gn.km.day <- as.data.frame(cbind(gn.sets$Lance.code, gn.sets$Km.day))
 colnames(gn.km.day) <- c("Lance.code", "Km.day")
 gn.km.day$Km.day <- as.numeric(as.character(gn.km.day$Km.day))
 
-write.csv (gn.km.day, file = "./Data_tables/gn_km_day.csv")
+write.csv (gn.km.day, file = "./Data_tables/gn_km_day.csv", row.names = FALSE)
 
