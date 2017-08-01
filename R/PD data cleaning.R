@@ -18,7 +18,7 @@ trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
-trips <- trips[,-1] # remove stupid row.names column. 
+#trips <- trips[,-1] # remove stupid row.names column. 
 
 ### This was doene on raw trips and saved as cleaned_trips 7/3/2017
 # Need to clean objective species
