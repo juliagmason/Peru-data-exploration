@@ -14,3 +14,11 @@ all.sz <- filter (sharks, Species == "Martillo") %>%
 # could pare down, but let's do that in the sharks project?
 
 write.csv (all.sz, file = "../PDsharks/Data_tables/all_sz.csv", row.names = FALSE)
+
+
+# btw, how does martillo rank overall?
+
+sharks %>%
+  group_by (Species) %>%
+  summarise (count = n()) %>%
+  arrange (desc (count))
