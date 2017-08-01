@@ -18,6 +18,8 @@ trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
+## DO NOT CHANGE CAPTURE SPP WITH COMMAS. The quantities will get messed up!
+
 #trips <- trips[,-1] # remove stupid row.names column. 
 
 ### This was doene on raw trips and saved as cleaned_trips 7/3/2017
@@ -94,6 +96,7 @@ trips$Lugar.de.zarpe <- gsub ("parachique", "Parachique", trips$Lugar.de.zarpe)
 trips$Lugar.de.zarpe <- gsub ("chorillos", "Chorillos", trips$Lugar.de.zarpe)
 
 # capture species (didn't I do this already??)
+## DO NOT CHANGE CAPTURE SPP WITH COMMAS. The quantities will get messed up!
 trips$capture.species.1 <- gsub ("Tollo", "tollo", trips$capture.species.1)
 trips$capture.species.1 <- gsub ("mams", "mama", trips$capture.species.1)
 trips$capture.species.1 <- gsub ("tollo mama", "mama", trips$capture.species.1)
@@ -222,7 +225,7 @@ trips$mixed.pane.2.mesh.units <- gsub ("p", "P", trips$mixed.pane.2.mesh.units)
 
 
 ## Can't overwrite the same file, it denies!
-write.csv (trips, "./Data_tables/cleaned_trips.csv", row.names = FALSE)
+#write.csv (trips, "./Data_tables/cleaned_trips.csv", row.names = FALSE)
 
 #######################################################
 ### SETS
