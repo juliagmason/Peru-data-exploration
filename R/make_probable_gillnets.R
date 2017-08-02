@@ -7,7 +7,8 @@ trips <- read.csv("./Data_tables/cleaned_trips.csv") # something going wrong wit
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
-sets <- read_csv ("./Data_tables/cleaned_sets.csv", col_types = cols (Lance.code = col_character()))
+sets <- read_csv ("./Data_tables/cleaned_sets.csv")
+# YAY lance code automatically character
 
 nets <- filter(trips, (!is.na(trips$panes)))  # 671
 unique(nets$Lugar.de.zarpe) # going to say that's okay, they're all in north
@@ -81,11 +82,11 @@ summary(gillnet.prob$pane.3.units) # both b. as are pane 2
 gillnet.prob.lite <- select(gillnet.prob, Trip.code, boat.name, Vessel.capacity, Vessel.length, Lugar.de.zarpe, crew, Fecha.de.zarpe, fecha.de.llegada, Sistema, Objective.species, puerto.de.llegada, panes, pane.1, pane.1.length.std, pane.1.depth.std, mesh.size.std, net.depth.std, pane.2, pane.2.length, pane.3, pane.3.length, Simple.net.size, capture.species.1, capture.species.2, capture.species.3, capture.species.4, capture.species.5, capture.species.6, capture.species.7, Quantity.1, Quantity.2, Quantity.3, Quantity.4, Quantity.5, Quantity.6, Quantity.7, Quantity.Units.1, Quantity.Units.2, Quantity.Units.3, Quantity.Units.4, Quantity.Units.5, Quantity.Units.6, Quantity.Units.7,cost.of.operation, Estimada.ganacia)
 
 
-#write.csv(gillnet.prob.lite, file = "./Data_tables/probable_gillnets.csv", row.names = FALSE)
+write.csv(gillnet.prob.lite, file = "./Data_tables/probable_gillnets.csv", row.names = FALSE) # 684
 
 gn.sets <- filter (sets, Trip.code %in% gillnet.prob$Trip.code)
 
-#write.csv (gn.sets, file = "./Data_tables/probable_gn_sets.csv", row.names = FALSE)
+write.csv (gn.sets, file = "./Data_tables/probable_gn_sets.csv", row.names = FALSE) # 4186
 
 
 ## Make data tables of species catch

@@ -18,6 +18,8 @@ trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
+# 1520 trips
+
 ## DO NOT CHANGE CAPTURE SPP WITH COMMAS. The quantities will get messed up!
 
 #trips <- trips[,-1] # remove stupid row.names column. 
@@ -246,18 +248,18 @@ sets$Long.2 <- as.character(sets$Long.2)
 sets$Long.3 <- as.character(sets$Long.3)
 sets$Long.4 <- as.character(sets$Long.4)
 
-sets$Lance.code <- paste (sets$Trip.code, sets$Lance.., sep = ".")
+sets$Lance.code <- paste (sets$Trip.code, sets$Lance.., sep = "_") # use an underscore so that it doesn't interpret as a number
 
 
 
 # fix dates and horas that excel added in
 
 # On May 29, 2017: 246.8, 362.1, 376.4, 590.2 were all gillnets with negative soak times. 
-sets$fecha.de.recojo[which (sets$Lance.code == 246.8)] <- "5/15/06"
-sets$Fecha.de.inicio[which (sets$Lance.code == 362.1)] <- "9/27/07"
+sets$fecha.de.recojo[which (sets$Lance.code == "246_8")] <- "5/15/06"
+sets$Fecha.de.inicio[which (sets$Lance.code == "362_1")] <- "9/27/07"
  #"2007-09-28"
-sets$fecha.de.recojo[which (sets$Lance.code == 376.4)] <- "11/11/07" # "2007-11-10"
-sets$fecha.de.recojo[which (sets$Lance.code == 590.2)] <- "1/16/11" #"2011-01-16"
+sets$fecha.de.recojo[which (sets$Lance.code == "376_4")] <- "11/11/07" # "2007-11-10"
+sets$fecha.de.recojo[which (sets$Lance.code == "590_2")] <- "1/16/11" #"2011-01-16"
 
 # fix hora
 sets$Hora.de.inicio <- as.character(as.POSIXct(paste(gsub(" .*$", "", sets$Fecha.de.inicio), gsub (".* ", "", sets$Hora.de.inicio), sep = " "), format = "%m/%d/%y %H:%M:%S"))
@@ -498,12 +500,16 @@ set.DLL$Year <- year(set.DLL$Date)
 
 set.DLL$Lance.code <- as.character( (set.DLL$Lance.code))
 
-#write.csv (set.DLL, file = "./Data_tables/set_DLL.csv")
+#write.csv (set.DLL, file = "./Data_tables/set_DLL.csv", row.names = FALSE)
 
 sets <- cbind (sets, set.DLL$Date, set.DLL$MY)
 colnames(sets)[84:85] <- c("Date", "MY")
 
-#write.csv (sets, file = "./Data_tables/cleaned_sets.csv")
+#write.csv (sets, file = "./Data_tables/cleaned_sets.csv", row.names = FALSE)
+
+
+###################################
+### Bycatch
 
 turtles <- read.csv("./Raw_data/Turtles_main.csv")
 
@@ -511,41 +517,52 @@ new.turt <- read.csv ("./Raw_data/turtles_sep8.csv") %>% filter (!Trip.code %in%
 
 colnames(new.turt) <- colnames(turtles)
 turtles <- rbind (turtles, new.turt)
-turtles$Lance.code <- paste(turtles$Trip.code, turtles$Lance, sep = ".")
+
+# lance code as underscore
+turtles$Lance.code <- paste(turtles$Trip.code, turtles$Lance, sep = "_")
 turtles <- left_join(turtles, set.DLL, by = "Lance.code")
 # replace species codes with names. use sci name?
 turtles$Species <- factor (turtles$Species, levels = c (1, 2, 3, 4, 5, 6), labels = c ("D_coriacea", "E_imbricata", "C_caretta", "C_mydas", "L_olivacea", "Unk"))
 
-sharks <- read.csv("./Raw_data/sharks_main.csv") # messed with shark_main already
-sharks$Lance.code <- paste(sharks$trip.code, sharks$lance, sep = ".")
+sharks <- read.csv("./Raw_data/sharks_main.csv") # messed with shark_main already # 31696
+sharks$Lance.code <- paste(sharks$trip.code, sharks$lance, sep = "_")
 sharks <- left_join(sharks, set.DLL, by = "Lance.code") %>%
   rename (Species = species, Trip.code = trip.code) # fix capitals to match other data frames
+write.csv (sharks, file = "./Data_tables/cleaned_sharks.csv", row.names = FALSE)
 
 mammals <- read.csv("./Raw_data/Mammals_Main.csv")
 new.mamm <- read.csv("./Raw_data/mammals_sep8.csv") %>% filter (!Trip.code %in% mammals$Trip.code)
 
 colnames(new.mamm) <- colnames(mammals)
 mammals <- rbind (mammals, new.mamm)
-mammals$Lance.code <- paste(mammals$Trip.code, mammals$Lance.., sep = ".")
+mammals$Lance.code <- paste(mammals$Trip.code, mammals$Lance.., sep = "_")
 mammals <- left_join(mammals, set.DLL, by = "Lance.code")
 # this was all I played with thus far
 # Change species from integer to spp name. 
 # Replace species codes with factor species name instead of integer. 
 mammals$Species <- factor (mammals$Species, levels = c (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11), labels = c ("D_capensis", "P_spinipinnus", "L_oscurus", "T_truncatus", "otro", "unk", "Globicephala_spp", "O_flavescens", "G_griseus", "lobo_chusco", "A_australis"))
+write.csv (mammals, file = "./Data_tables/cleaned_mammals.csv", row.names = FALSE)
 
 birds <- read.csv("./Raw_data/seabirds_sep8.csv") %>% filter (When.captured. != 3) # remove just sightings. 
-birds$Lance.code <- paste(birds$Trip.code, birds$Lance.., sep = ".")
+birds$Lance.code <- paste(birds$Trip.code, birds$Lance.., sep = "_")
 birds <- left_join (birds, set.DLL, by = "Lance.code")
 
+write.csv (birds, file = "./Data_tables/cleaned_birds.csv", row.names = FALSE)
+
 other <- read.csv("./Raw_data/Other_species_sep8.csv") 
-other$Lance.code <- paste(other$Trip.code, other$Lance.., sep = ".")
+other$Lance.code <- paste(other$Trip.code, other$Lance.., sep = "_")
 other <- left_join (other, set.DLL, by = "Lance.code")
 
+write.csv (other, file = "./Data_tables/cleaned_other.csv", row.names = FALSE)
+
 mola <- read.csv("./Raw_data/sunfish_sep8.csv") ## remember to filter for just sightings
-mola$Lance.code <- paste(mola$trip, mola$set, sep = ".")
+mola$Lance.code <- paste(mola$trip, mola$set, sep = "_")
 mola <- left_join (mola, set.DLL, by = "Lance.code")
 
+write.csv (mola, file = "./Data_tables/cleaned_mola.csv")
+
 seahorse <- read.csv("./Raw_data/seahorses_sep8.csv")
-seahorse$Lance.code <- paste(seahorse$trip, seahorse$set, sep = ".")
+seahorse$Lance.code <- paste(seahorse$trip, seahorse$set, sep = "_")
 seahorse <- left_join(seahorse, set.DLL, by = "Lance.code")
 
+write.csv (seahorse, file = "./Data_tables/cleaned_seahorse.csv")

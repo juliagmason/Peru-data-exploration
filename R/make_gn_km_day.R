@@ -3,9 +3,9 @@
 # 11/10/2016 (edited 7/10/17)
 library (tidyverse)
 
-gn.trips <- read_csv ("./Data_tables/probable_gillnets.csv")
+gn.trips <- read_csv ("./Data_tables/probable_gillnets.csv") # 684
 gn.sets <- read_csv ("./Data_tables/probable_gn_sets.csv", 
-                     col_types = cols (Lance.code = col_character()))
+                     col_types = cols (Lance.code = col_character())) # 4186
 
 # there are 4091 unique lance codes, but 4186 rows in gn.sets. I think this is a 1 and 10 problem (ch vs nmber. )
 #gn.sets$Lance.code[duplicated (gn.sets$Lance.code)]
