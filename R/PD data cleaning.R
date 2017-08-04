@@ -1,4 +1,3 @@
-##### PD Data Cleaning #####
 #rm(list=ls())
 
 library (tidyverse)
@@ -483,9 +482,13 @@ sets$Lat.F <- lat.f.dec
 sets$Lon.I <- lon.i.dec
 sets$Lon.F <- lon.f.dec
 
+
+# fix lat for one that I know is wrong
+sets$Lat.I[which (sets$Lance.code == "1220_6")] <- -8.49217
+
 # 1359_10 is on land. I think this would be fixed if I changed latituted -79.0824 to -79.8024, but not confirmed. This is actually an issue with the raw data, in Long.1, and the output is a calculated number. I still had lance confusion issues back in peru and didn't look at 1359.10, only 1359_1. 
 
-sets$Lon.I
+#sets$Lon.I
 
 # eventually append date late lon
 set.DLL <- select(sets, Lance.code, Fecha.de.inicio, Lat.I, Lon.I, Lat.F, Lon.F) 
@@ -504,12 +507,12 @@ set.DLL$Year <- year(set.DLL$Date)
 
 set.DLL$Lance.code <- as.character( (set.DLL$Lance.code))
 
-#write.csv (set.DLL, file = "./Data_tables/set_DLL.csv", row.names = FALSE)
+write.csv (set.DLL, file = "./Data_tables/set_DLL.csv", row.names = FALSE)
 
 sets <- cbind (sets, set.DLL$Date, set.DLL$MY)
 colnames(sets)[84:85] <- c("Date", "MY")
 
-#write.csv (sets, file = "./Data_tables/cleaned_sets.csv", row.names = FALSE)
+write.csv (sets, file = "./Data_tables/cleaned_sets.csv", row.names = FALSE)
 
 
 ###################################
