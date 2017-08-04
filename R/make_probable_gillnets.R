@@ -79,7 +79,7 @@ gillnet.prob$pane.3[460]
 summary(gillnet.prob$pane.3.units) # both b. as are pane 2
 
 # pare down dataset
-gillnet.prob.lite <- select(gillnet.prob, Trip.code, boat.name, Vessel.capacity, Vessel.length, Lugar.de.zarpe, crew, Fecha.de.zarpe, fecha.de.llegada, Sistema, Objective.species, puerto.de.llegada, panes, pane.1, pane.1.length.std, pane.1.depth.std, mesh.size.std, net.depth.std, pane.2, pane.2.length, pane.3, pane.3.length, Simple.net.size, capture.species.1, capture.species.2, capture.species.3, capture.species.4, capture.species.5, capture.species.6, capture.species.7, Quantity.1, Quantity.2, Quantity.3, Quantity.4, Quantity.5, Quantity.6, Quantity.7, Quantity.Units.1, Quantity.Units.2, Quantity.Units.3, Quantity.Units.4, Quantity.Units.5, Quantity.Units.6, Quantity.Units.7,cost.of.operation, Estimada.ganacia)
+gillnet.prob.lite <- select(gillnet.prob, Trip.code, boat.name, Vessel.capacity, Vessel.length, Lugar.de.zarpe, crew, Fecha.de.zarpe, fecha.de.llegada, Sistema, Objective.species, Objective.species.2, Objective.species.3, puerto.de.llegada, panes, pane.1, pane.1.length.std, pane.1.depth.std, mesh.size.std, net.depth.std, pane.2, pane.2.length, pane.3, pane.3.length, Simple.net.size, capture.species.1, capture.species.2, capture.species.3, capture.species.4, capture.species.5, capture.species.6, capture.species.7, Quantity.1, Quantity.2, Quantity.3, Quantity.4, Quantity.5, Quantity.6, Quantity.7, Quantity.Units.1, Quantity.Units.2, Quantity.Units.3, Quantity.Units.4, Quantity.Units.5, Quantity.Units.6, Quantity.Units.7,cost.of.operation, Estimada.ganacia)
 
 
 write.csv(gillnet.prob.lite, file = "./Data_tables/probable_gillnets.csv", row.names = FALSE) # 684
