@@ -483,6 +483,10 @@ sets$Lat.F <- lat.f.dec
 sets$Lon.I <- lon.i.dec
 sets$Lon.F <- lon.f.dec
 
+# 1359_10 is on land. I think this would be fixed if I changed latituted -79.0824 to -79.8024, but not confirmed. This is actually an issue with the raw data, in Long.1, and the output is a calculated number. I still had lance confusion issues back in peru and didn't look at 1359.10, only 1359_1. 
+
+sets$Lon.I
+
 # eventually append date late lon
 set.DLL <- select(sets, Lance.code, Fecha.de.inicio, Lat.I, Lon.I, Lat.F, Lon.F) 
 set.DLL$Fecha.de.inicio <- as.Date(set.DLL$Fecha.de.inicio, format = "%Y-%m-%d") 
