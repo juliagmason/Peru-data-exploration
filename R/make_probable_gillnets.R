@@ -9,6 +9,7 @@ trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
 
 sets <- read_csv ("./Data_tables/cleaned_sets.csv")
 # YAY lance code automatically character
+# 8/30/2017: trying to trace back issue with probable gillnets. Date is a longitude, and there's set.DLL$Date and set.DLL$MY. Looks like this goes back to data cleaning. I re-ran PD data cleaning and this looks like it's resolved. Must have been something where when I renamed colums 84 and 85 (Date and MY from set.DLL).
 
 nets <- filter(trips, (!is.na(trips$panes)))  # 671
 unique(nets$Lugar.de.zarpe) # going to say that's okay, they're all in north

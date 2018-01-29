@@ -472,8 +472,10 @@ for (i in 1:length(sets$Long.4)) {
 }
 
 
-coords<- data.frame(sets$Lance.code, lat.i.dec, lat.1.dec, lon.i.dec, lon.1.dec, lat.f.dec, lat.2.dec, lon.f.dec, lon.2.dec,lat.3.dec, lon.3.dec, lat.4.dec, lon.4.dec)
-colnames(coords) = c("Lance.code", "Lat.I", "Lat.1", "Lon.I", "Lon.1", "Lat.F", "Lat.2","Lon.F", "Lon.2","Lat.3", "Lon.3", "Lat.4", "Lon.4")
+# coords<- data.frame(sets$Lance.code, lat.i.dec, lat.1.dec, lon.i.dec, lon.1.dec, lat.f.dec, lat.2.dec, lon.f.dec, lon.2.dec,lat.3.dec, lon.3.dec, lat.4.dec, lon.4.dec)
+# colnames(coords) = c("Lance.code", "Lat.I", "Lat.1", "Lon.I", "Lon.1", "Lat.F", "Lat.2","Lon.F", "Lon.2","Lat.3", "Lon.3", "Lat.4", "Lon.4")
+
+
 # sets$Lance.code [ which (is.na (lon.4.dec) == TRUE)] [ ! (sets$Lance.code [ which (is.na (lon.4.dec) == TRUE)] %in% sets$Lance.code [ which (sets$Long.4 == "")])]
 #options(warn = 0)
 
