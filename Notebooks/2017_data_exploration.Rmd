@@ -1,0 +1,18 @@
+---
+title: "2017 data exploration"
+date: 2018-03-02
+output: html_notebook
+---
+
+Run-through of most recent ProDelphinus data (Aug 2016-Feb 2018)
+
+```{r}
+skim (sets_18)
+```
+Lots of missing dates shown (1/3), but I think this is a m/d/y d/m/y issue. Looks in the dataset that there are really only two missing dates. 
+
+## Map points
+```{r map}
+sz.juv.map <- get_map (location = c (min (juv.sz.PA$Lon, na.rm = TRUE), min (juv.sz.PA$Lat, na.rm = TRUE), max (juv.sz.PA$Lon, na.rm = TRUE), max (juv.sz.PA$Lat, na.rm = TRUE)), maptype = "terrain", zoom = 6)
+```
+
