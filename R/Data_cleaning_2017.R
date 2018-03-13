@@ -23,7 +23,7 @@ sets_18 <- read_csv ("Data_tables/lances_feb_2018.csv",
                      col_types = cols (
                        "Fecha" = col_date(format = "%d/%m/%Y")
                      )) %>%
-  filter (`Trip code` > 1544) %>%
+  filter (`Trip Code` > 1544) %>%
   mutate ("Lance.code" = paste (`Trip code`, `Lance #`, sep = "_"))
 
 colnames (sets_18) <- make.names (colnames (sets_18))
@@ -226,3 +226,64 @@ sort (unique (sets_18$Trip.code[which (! sets_18$Trip.code %in% hammers_18$trip.
 mart_uncertain_trips <- c (1548, 1568, 1570, 1571, 1580, 1581, 1591, 1592, 1597, 1598, 1599, 1600, 1603, 1504, 168, 1640, 1643, 1665, 1680, 1681, 1688, 1693, 1699, 1726, 1767)
 
 sets_18 %>% filter (Trip.code %in% mart_uncertain_trips) %>% nrow()
+
+# gillnets?
+trips_18 <- read_csv ("Data_tables/trips_feb_2018.csv") %>%
+  filter (`Trip Code` > 1544)
+colnames (trips_18) <- make.names (colnames (trips_18))
+
+nets_18 <- filter(trips_18, (!is.na(trips_18$..panes)))  # 229
+unique(nets_18$Lugar.de.zarpe) # no mancora
+gillnet_18 <- filter(nets_18,!Net.depth.category %in% "Fondo") # remove bottom set nets  146 trips
+unique(gillnet_18$Sistema)  #
+
+gn_sets_18 <- filter (sets_18, Trip.code %in% gillnet_18$Trip.Code)
+# abbreviated check for sneaky martillo trips, not going to worry about juvenile vs adult for now. just trips that have martillo in catch, but not measured. 
+marts_18 <- read_csv ("Data_tables/sharks_feb_2018.csv") %>% 
+  filter (`trip code` > 1544, species == "Martillo" | species == "S. zygaena") %>%
+  mutate ("Lance.code" = paste (`trip code`, `lance #`, sep = "_"))
+
+colnames (marts_18) <- make.names( colnames (marts_18))
+
+mart_trips_18 <- unique (marts_18$trip.code) #86
+
+
+# absence trips
+no.sz.trips_18 <- filter (gillnet_18, ! Trip.Code %in% mart_trips_18) # 84
+
+# what's in capture spp
+sort (unique (gillnet_18$Capture.species.1)) # cruzetas, martillo, Martillo, T. Martillo
+sort (unique (gillnet_18$Capture.species.2)) # cruzeta, martillo, Martillo, t. martillo
+sort (unique (gillnet_18$Capture.species.3)) # martillo, Martillo
+sort (unique (gillnet_18$Capture.species.4)) # cruzeta, martillo, MARTILLO, martilo
+sort (unique (gillnet_18$Capture.species.5)) # cruzeta, martillo, Martillo, Tiburon martillo
+sort (unique (gillnet_18$Capture.species.6)) # cruceta, martillo
+sort (unique (gillnet_18$Capture.species.7)) # cruzeta, martillo, Martillo
+
+sneaky_sz_trips_18 <- gillnet_18 %>%
+  filter (Trip.Code %in% no.sz.trips_18$Trip.Code & (grepl ("martillo", Capture.species.1, ignore.case = TRUE) | grepl ("cruzetas", Capture.species.1) | grepl ("T. Martillo", Capture.species.1) | grepl ("martillo", Capture.species.2, ignore.case =  TRUE) | grepl ("cruzeta", Capture.species.2) | grepl ("t. martillo", Capture.species.2) | grepl ("martillo", Capture.species.3, ignore.case = TRUE) | grepl ("martillo", Capture.species.4, ignore.case = TRUE) | grepl ("cruzeta", Capture.species.4) | grepl ("martilo", Capture.species.4) | grepl ("martillo", Capture.species.5, ignore.case = TRUE) | grepl ("cruzeta", Capture.species.5) | grepl ("martillo", Capture.species.6) | grepl ("cruzeta", Capture.species.6) | grepl ("martillo", Capture.species.7, ignore.case =TRUE) | grepl ("cruzeta", Capture.species.7))) # 23 trips
+
+# 1548-- Zorritos 16, 1 mobula japanica measured. cruzetas, mobula, pampano
+# 1568: Zorritos 2016, vela mobula perico cruzeta mantequero espada, no shark data
+# 1571: Zorritos 2016, mobula, vela, barracuda, tuno, cruzeta, 3 mobula measured
+# 1580 Ancon 2016, perico, atun, espada, barracuda, martillo, vela, diamante, no shark data
+# 1581 Ancon 2016, perico, atun, barracuda, martillo, diamante, espada, no shark data
+# 1591 Ancon 2016 perico atun vela martillo, barracuda diamante espada, no shark data
+# 1592 Ancon 2016 espada perico vela atun barracuda martillo diamante, no shark data
+# 1597 Ancon 2016 perico atun barracuda martilo espada vela
+# 1598 Ancon 2016 perico atun espada barracuda martillo azul, no shark data
+# 1599 Ancon 2016 perico atun barracuda, zorro azul diamante martillo
+# 1600 Ancon 2016 perico atun barracuda diamante azul espada martillo, no shark data
+# 1603 Ancon 2016 perico atun martillo espada diamante azul barracuda, no shark data
+# 1604 Ancon 2016 perico atun baracuda diamante martillo vela, no shark data
+# 1628 Ancon 2017 perico martillo atun barracuda diamante espada no shark data
+# 1640 Ancon 2017 perico tuno diamante azul martillo merlin vela, no shark data
+# 1643 Ancon 2017 PPA perico vela espada tuno martillo barracuda merlin, no shark data
+# 1665 San Jose 2017 martillo, tons of tollo mama and raya aguila
+# 1680 Ancon 2017 PPA perico tuno martillo vela zorro azul diamante, no shark data
+# 1681 Ancon 2017 PPA perico barracuda vela tuno martillo azul diamante, no shark data
+# 1688 Zorritos 2017 tuno martillo, no shark data
+# 1693 Ancon 2017 PPA martillo azul gata raya, no shark data
+# 1699 Ancon 2017 PPA diamante azul vela martillo merlin barracuda, no shark data
+# 1767 Ancon 2017 PPA martillo azul bonito, no shark data
+
