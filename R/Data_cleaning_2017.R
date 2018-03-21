@@ -93,8 +93,8 @@ sets_18$longitude.inicial <- gsub ("´", "'", sets_18$longitude.inicial)
 # 1738_2 lon initial 381 instead of 81
 sets_18$longitude.inicial[which (sets_18$Lance.code == "1738_2")] <- "81'03.149"
 
-# # 1785_10 lon i is a lat, also problem with lon 1. NA for now
-sets_18$longitude.inicial[which (sets_18$Lance.code == "1785_10")] <- NA
+# # 1785_10 lon i is a lat, also problem with lon 1. fixed from original sheet
+sets_18$longitude.inicial[which (sets_18$Lance.code == "1785_10")] <- "80'02.220"
 
 # iterate from lon.i.dec
 #which (lon.i.dec > -70) # 181, 315, 964
