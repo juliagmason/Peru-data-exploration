@@ -13,6 +13,8 @@ library (lubridate)
 
 # I manually fixed some things in cleaned_trips before I was finished going through all the columns, so read in cleaned_trips. If need to redo it, the species changes are below, commented out. 
 
+#### TRIPS ----
+
 trips <- read_csv ("./Data_tables/cleaned_trips.csv")
 trips$Fecha.de.zarpe <- as.Date(trips$Fecha.de.zarpe, format = "%m/%d/%Y")
 trips$fecha.de.llegada <- as.Date (trips$fecha.de.llegada, format = "%m/%d/%Y")
@@ -229,7 +231,7 @@ trips$mixed.pane.2.mesh.units <- gsub ("p", "P", trips$mixed.pane.2.mesh.units)
 #write.csv (trips, "./Data_tables/cleaned_trips.csv", row.names = FALSE)
 
 #######################################################
-### SETS
+### SETS ----
 #########################################################
 sets <- read.csv ("./Raw_data/Lances_sep8_16_fixed.csv") 
 sets$Fecha.de.inicio <- as.character (sets$Fecha.de.inicio) #, format = "%m/%d/%y")
@@ -282,6 +284,89 @@ sets$fecha.de.recojo <- as.Date (sets$fecha.de.recojo, format = "%m/%d/%y")
 #grepl(".", sets$Latitud.inicial[1])
 # x <- as.character(1234)
 # gsub ( "^(.{2})(.*)$", "\\1'\\2", x)
+
+# Mar 21 2018 fixing more lat and lon from original data sheet
+sets$longitude.inicial[which (sets$Lance.code == "392_1")] <- "78'06.459"
+sets$longitude.final[which (sets$Lance.code == "392_1")] <- "78'06.590"
+
+sets$Long.1[which (sets$Lance.code == "392_1")] <- "78'06.459"
+sets$Long.2[which (sets$Lance.code == "392_1")] <- "78'06.590"
+sets$Long.3[which (sets$Lance.code == "392_1")] <- "78'06.462"
+# lon 4 is ok
+
+# Several are in Degrees, minutes seconds. I want them in decimal degrees. Most are entered as degrees with the seconds converted but not the minutes.just going to do long i and lat i for now.  
+
+# 65
+# lat i is 05 31' 48", so would be (31 + (48/60))/60
+sets$Latitud.inicial[which (sets$Lance.code == "65_1")] <- 5 + (31 + (48/60))/60
+
+sets$longitude.inicial[which (sets$Lance.code == "65_1")] <- 80 + (51 + (10/60))/60
+
+# 439 is entered as decimals, What format is this?? more than 60 seconds...
+# sets$latitude.inicial[which (sets$Lance.code == "439_1")] <- 6 + (42 + (84.1/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "439_1")] <- 80 + (9 + (13.7/60))/60
+# 
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "439_2")] <- 6 + (33 + (97.2/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "439_2")] <- 80 + (9 + (53.3/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "439_3")] <- 6 + (32 + (50.5/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "439_3")] <- 80 + (9 + (26.1/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "439_4")] <- 6 + (34 + (45.5/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "439_4")] <- 80 + (9 + (42/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "439_5")] <- 6 + (54 + (70.7/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "439_5")] <- 80 + (9 + (32.9/60))/60
+# 
+# # 440
+# sets$latitude.inicial[which (sets$Lance.code == "440_1")] <- 6 + (31 + (53.5/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "440_1")] <- 80 + (9 + (1.8/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "440_2")] <- 6 + (23 + (72.3/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "440_2")] <- 80 + (9 + (98.5/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "440_3")] <- 6 + (19 + (52.9/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "440_3")] <- 80 + (9 + (49.8/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "440_4")] <- 6 + (17 + (78.8/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "440_4")] <- 80 + (9 + (49.1/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "440_5")] <- 6 + (16 + (56.4/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "440_5")] <- 80 + (9 + (32.3/60))/60
+# 
+# # 442
+# sets$latitude.inicial[which (sets$Lance.code == "442_1")] <- 6 + (56 + (79.5/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_1")] <- 80 + (26 + (64.4/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "442_2")] <- 6 + (57 + (90.4/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_2")] <- 80 + (44 + (2.9/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "442_3")] <- 6 + (57 + (72.4/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_3")] <- 80 + (41 + (98.5/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "442_4")] <- 6 + (44 + (26.94/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_4")] <- 80 + (13 + (49.2/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "442_5")] <- 6 + (41 + (29/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_5")] <- 80 + (6 + (4.9/60))/60
+# 
+# sets$latitude.inicial[which (sets$Lance.code == "442_6")] <- 6 + (37 + (25.8/60))/60
+# sets$longitude.inicial[which (sets$Lance.code == "442_6")] <- 80 + (4 + (15.4/60))/60
+
+# 392 8s were entered as 9s
+sets$longitude.final[which (sets$Lance.code == "392_1")] <- "78'06.590"
+
+sets$Long.1[which (sets$Lance.code == "392_1")] <- "78'06.459"
+sets$Long.2[which (sets$Lance.code == "392_1")] <- "78'06.590"
+sets$Long.3[which (sets$Lance.code == "392_1")] <- "78'06.462"
+# lon 4 is ok
+
+sets$longitude.inicial[which (sets$Lance.code == "1369_10")] <- "79'34.945"
+
+
+
+
 
 lat.i.dec <- numeric(length(sets$Latitud.inicial))
 for (i in 1:length(sets$Latitud.inicial)) { 
