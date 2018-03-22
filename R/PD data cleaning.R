@@ -286,6 +286,10 @@ sets$fecha.de.recojo <- as.Date (sets$fecha.de.recojo, format = "%m/%d/%y")
 # gsub ( "^(.{2})(.*)$", "\\1'\\2", x)
 
 # Mar 21 2018 fixing more lat and lon from original data sheet
+
+# none of this actually did anything. 392 is still on land, much more so at 78. I don't think 1359_10 is any better either. 
+
+# 8s were entered as 9s, but 
 sets$longitude.inicial[which (sets$Lance.code == "392_1")] <- "78'06.459"
 sets$longitude.final[which (sets$Lance.code == "392_1")] <- "78'06.590"
 
@@ -355,12 +359,7 @@ sets$longitude.inicial[which (sets$Lance.code == "65_1")] <- 80 + (51 + (10/60))
 # sets$longitude.inicial[which (sets$Lance.code == "442_6")] <- 80 + (4 + (15.4/60))/60
 
 # 392 8s were entered as 9s
-sets$longitude.final[which (sets$Lance.code == "392_1")] <- "78'06.590"
 
-sets$Long.1[which (sets$Lance.code == "392_1")] <- "78'06.459"
-sets$Long.2[which (sets$Lance.code == "392_1")] <- "78'06.590"
-sets$Long.3[which (sets$Lance.code == "392_1")] <- "78'06.462"
-# lon 4 is ok
 
 sets$longitude.inicial[which (sets$Lance.code == "1369_10")] <- "79'34.945"
 
