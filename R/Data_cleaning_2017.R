@@ -23,7 +23,7 @@ sets_18 <- read_csv ("Data_tables/lances_feb_2018.csv",
                      col_types = cols (
                        "Fecha" = col_date(format = "%d/%m/%Y")
                      )) %>%
-  filter (`Trip Code` > 1544) %>%
+  filter (`Trip code` > 1544) %>%
   mutate ("Lance.code" = paste (`Trip code`, `Lance #`, sep = "_"))
 
 colnames (sets_18) <- make.names (colnames (sets_18))
