@@ -99,3 +99,52 @@ sf.sets %>%
 sf.sets.ts <- ts (data = sf.sets$Date, start = min (sf.sets$Date), end = max (sf.sets$Date))
 
 
+# separate gillnets and longlines
+# mutate by hooks > 0 then fill by ll
+sf.trips.gear <- sf.trips %>%
+  mutate ("Gear" = ifelse (! is.na(hooks), "LL", "GN")) %>%
+  select (Trip.code, Gear)
+
+
+png (filename = "./SF_months_by_year_gear.png")
+sf.sets %>%
+  left_join (sf.trips.gear, by = "Trip.code") %>%
+  group_by (MY, Gear) %>%
+  summarise (count = n()) %>%
+  ggplot () +
+  geom_line(aes (x = month (MY), y = count, col = Gear)) +
+  facet_wrap (~year(MY)) +
+  scale_x_continuous (breaks = c (1:12)) +
+  labs (x = "Month") +
+  ggtitle ("Observed fishing sets with swordfish catch")
+dev.off()
+
+png (filename = "./SF_months_hist_gear.png")
+sf.sets %>%
+  left_join (sf.trips.gear, by = "Trip.code") %>%
+  ggplot () +
+  geom_bar(aes (x = month(Date), fill = Gear), binwidth = 1) +
+  scale_x_continuous (breaks = c (1:12)) +
+  labs (x = "Month") +
+  ggtitle ("Observed fishing sets with swordfish catch")
+dev.off()
+
+png (filename = "./SF_months_line_gear.png")
+sf.sets %>%
+  left_join (sf.trips.gear, by = "Trip.code") %>%
+  group_by (month(Date), Gear) %>%
+  summarize (count = n()) %>%
+
+  ggplot () +
+  geom_line(aes (x = `month(Date)`, y  = count, col = Gear), binwidth = 1) +
+  scale_x_continuous (breaks = c (1:12)) +
+  labs (x = "Month") +
+  ggtitle ("Observed fishing sets with swordfish catch")
+dev.off()
+
+# how many sets??
+sf.sets %>%
+  left_join (sf.trips.gear, by = "Trip.code") %>%
+  group_by (Gear) %>%
+  summarize (count = n())
+
